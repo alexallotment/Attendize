@@ -343,7 +343,7 @@
 
                             <div class="panel-group" id="bgOptions">
 
-                                <div class="panel panel-default" data-type="color">
+                                <div class="panel panel-default" data-type="color" style="display: none;">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#bgOptions" href="#bgColor"
@@ -369,6 +369,19 @@
                                             </a>
                                         </h4>
                                     </div>
+
+                                    <?php
+                                    // echo "<pre>";
+                                    // print_r($event);
+                                    // echo "</pre>";
+
+                                    //$path = public_path() . '/' . config('attendize.event_bg_images') . '/test';
+
+                                    // echo "<pre>";
+                                    // print_r($thumbs);
+                                    // echo "</pre>";
+                                    ?>
+
                                     <div id="bgImage"
                                          class="panel-collapse {{($event->bg_type == 'image') ? 'in' : 'collapse'}}">
                                         <div class="panel-body">
@@ -383,13 +396,16 @@
 
                                             {!! Form::hidden('bg_image_path_custom', ($event->bg_type == 'image') ? $event->bg_image_path : '') !!}
                                         </div>
-                                            <a class="btn btn-link" href="https://pixabay.com?ref=attendize" title="PixaBay Free Images">
-                                                @lang("Design.images_provided_by_pixabay")
-                                            </a>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::label('event_design_image', trans("Ticket.event_design_image"), ['class' => 'control-label']) !!}
+                                {!! Form::styledFile('event_design_image', 1) !!}
 
                             </div>
+
                             <div class="panel-footer mt15 text-right">
                                 <span class="uploadProgress" style="display:none;"></span>
                                 {!! Form::submit(trans("basic.save_changes"), ['class'=>"btn btn-success"]) !!}
@@ -522,9 +538,9 @@
 
                 <div class="tab-pane {{$tab == 'ticket_design' ? 'active' : ''}}" id="ticket_design">
                     {!! Form::model($event, array('url' => route('postEditEventTicketDesign', ['event_id' => $event->id]), 'class' => 'ajax ')) !!}
-                    <h4>@lang("Ticket.ticket_design")</h4>
+                    <h4 style="display: none;">@lang("Ticket.ticket_design")</h4>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: none;">
                             <div class="form-group">
                                 {!! Form::label('ticket_border_color', trans("Ticket.ticket_border_color"), ['class'=>'control-label required ']) !!}
                                 {!!  Form::input('text', 'ticket_border_color', Input::old('ticket_border_color'),
@@ -534,7 +550,7 @@
                                                             ])  !!}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: none;">
                             <div class="form-group">
                                 {!! Form::label('ticket_bg_color', trans("Ticket.ticket_background_color"), ['class'=>'control-label required ']) !!}
                                 {!!  Form::input('text', 'ticket_bg_color', Input::old('ticket_bg_color'),
@@ -544,7 +560,7 @@
                                                             ])  !!}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: none;">
                             <div class="form-group">
                                 {!! Form::label('ticket_text_color', trans("Ticket.ticket_text_color"), ['class'=>'control-label required ']) !!}
                                 {!!  Form::input('text', 'ticket_text_color', Input::old('ticket_text_color'),
@@ -554,7 +570,7 @@
                                                             ])  !!}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: none;">
                             <div class="form-group">
                                 {!! Form::label('ticket_sub_text_color', trans("Ticket.ticket_sub_text_color"), ['class'=>'control-label required ']) !!}
                                 {!!  Form::input('text', 'ticket_sub_text_color', Input::old('ticket_border_color'),
@@ -564,14 +580,14 @@
                                                             ])  !!}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: none;">
                             <div class="form-group">
                                 {!! Form::label('is_1d_barcode_enabled', trans("Ticket.show_1d_barcode"), ['class' => 'control-label required']) !!}
                                 {!! Form::select('is_1d_barcode_enabled', [1 => trans("basic.yes"), 0 => trans("basic.no")], $event->is_1d_barcode_enabled, ['class'=>'form-control']) !!}
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display:none;">
                             <div class="float-l">
                                 <div class="form-group">
                                     {!! Form::label('ticket_background_image', trans("Ticket.ticket_background_image"), ['class' => 'control-label']) !!}

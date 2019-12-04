@@ -306,6 +306,36 @@ class EventCustomizeController extends MyBaseController
             $event->bg_type = 'color';
         }
 
+        if ($request->hasFile('event_design_image')) {
+            $path = public_path() . '/' . config('attendize.event_bg_images') . '/' . $event->organiser_id;
+
+            if (!file_exists($path)) {
+                File::makeDirectory($path, $mode = 0777, true, true);
+            }
+
+            $filename = 'event_design_image-' . md5(time() . $event->id) . '.' . strtolower($request->file('event_design_image')->getClientOriginalExtension());
+
+            $file_full_path = $path . '/' . $filename;
+            $thumb_path = $path . '/thumbs';
+            $file_thumbs_path = $path . '/thumbs/' . $filename;
+
+            if (!file_exists($thumb_path)) {
+                File::makeDirectory($thumb_path, $mode = 0777, true, true);
+            }
+
+            $request->file('event_design_image')->move($path, $filename);
+
+            $img = Image::make($file_full_path);
+
+            $img->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->save($file_full_path);
+            $img->save($file_thumbs_path);
+        }
+
         /*
          * Not in use for now.
          */

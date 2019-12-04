@@ -30,6 +30,7 @@ class Event extends MyBaseModel
                 'end_date'            => 'required|date_format:"'.$format.'"',
                 'organiser_name'      => 'required_without:organiser_id',
                 'event_image'         => 'mimes:jpeg,jpg,png|max:3000',
+                'on_sale_date'            => 'date_format:"'.$format.'"'
             ];
     }
 
@@ -247,6 +248,31 @@ class Event extends MyBaseModel
         return $this->end_date->format(config('attendize.default_datetime_format'));
     }
 
+        /**
+     * Parse end_date to a Carbon instance
+     *
+     * @param string $date DateTime
+     */
+    public function setOnSaleDateAttribute($date)
+    {
+        $format = config('attendize.default_datetime_format');
+
+        if($date){
+            $this->attributes['on_sale_date'] = Carbon::createFromFormat($format, $date);
+        } else {
+            $this->attributes['on_sale_date'] = null;
+        }
+    }
+
+    /**
+     * Format end date from user preferences
+     * @return String Formatted date
+     */
+    public function onSaleDateFormatted()
+    {
+        return $this->on_sale_date->format(config('attendize.default_datetime_format'));
+    }
+
     /**
      * Indicates whether the event is currently happening.
      *
@@ -382,7 +408,7 @@ class Event extends MyBaseModel
      */
     public function getDates()
     {
-        return ['created_at', 'updated_at', 'start_date', 'end_date'];
+        return ['created_at', 'updated_at', 'start_date', 'end_date', 'on_sale_date'];
     }
 
     public function getIcsForEvent()

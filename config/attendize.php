@@ -27,6 +27,7 @@ return [
     'event_default_bg_image' => 'assets/images/public/EventPage/backgrounds/5.jpg',
 
     'event_images_path'      => 'user_content/event_images',
+    'event_ticket_bg_image_path'      => 'user_content/ticket_background_image',
     'organiser_images_path'  => 'user_content/organiser_images',
     'event_pdf_tickets_path' => 'user_content/pdf_tickets',
     'event_bg_images'        => 'assets/images/public/EventPage/backgrounds',

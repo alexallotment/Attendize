@@ -38,6 +38,7 @@ return array (
   'search_tickets' => 'Search tickets...',
   'show_1d_barcode' => 'Show 1D barcode on tickets',
   'ticket_background_image' => 'Ticket Background Image',
+  'event_design_image' => 'Upload an Event Design Image',
   'age_restriction' => 'Age Restriction',
   'promoter' => 'Promoter',
   'line_up' => 'Line Up',

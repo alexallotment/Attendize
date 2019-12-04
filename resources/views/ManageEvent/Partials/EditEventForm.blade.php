@@ -25,7 +25,7 @@
 
         <div class="form-group">
                     {!! Form::label('on_sale_date', trans("Event.event_on_sale_date"), array('class'=>'control-label')) !!}
-                    {!!  Form::text('on_sale_date', $event->getFormattedDate('on_sale_date'),
+                    {!! Form::text('on_sale_date', $event->getFormattedDate('on_sale_date'),
                         [
                     'class'=>'form-control hasDatepicker ',
                     'data-field'=>'datetime',

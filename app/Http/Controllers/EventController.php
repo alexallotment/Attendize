@@ -54,6 +54,7 @@ class EventController extends MyBaseController
         $event->age_restriction = $request->get('age_restriction');
         $event->line_up = $request->get('line_up');
         $event->promoter = $request->get('promoter');
+        $event->on_sale_date = $request->get('on_sale_date');
 
         /*
          * Venue location info (Usually auto-filled from google maps)
@@ -232,6 +233,7 @@ class EventController extends MyBaseController
         $event->age_restriction = $request->get('age_restriction');
         $event->line_up = $request->get('line_up');
         $event->promoter = $request->get('promoter');
+        $event->on_sale_date = $request->get('on_sale_date');
         $event->google_tag_manager_code = $request->get('google_tag_manager_code');
 
         /*
