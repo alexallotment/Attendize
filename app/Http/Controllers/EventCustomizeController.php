@@ -21,10 +21,12 @@ class EventCustomizeController extends MyBaseController
      */
     public function showCustomize($event_id = '', $tab = '')
     {
+        $event = Event::where('id', $event_id)->first();
+
         $data = $this->getEventViewData($event_id, [
             'currencies'               	 => Currency::pluck('title', 'id'),
-            'available_bg_images'        => $this->getAvailableBackgroundImages(),
-            'available_bg_images_thumbs' => $this->getAvailableBackgroundImagesThumbs(),
+            'available_bg_images'        => $this->getAvailableBackgroundImages($event->organiser_id),
+            'available_bg_images_thumbs' => $this->getAvailableBackgroundImagesThumbs($event->organiser_id),
             'tab'                        => $tab,
         ]);
 
@@ -36,17 +38,23 @@ class EventCustomizeController extends MyBaseController
      *
      * @return array
      */
-    public function getAvailableBackgroundImages()
+    public function getAvailableBackgroundImages($organiser_id)
     {
         $images = [];
 
-        $files = File::files(public_path() . '/' . config('attendize.event_bg_images'));
+        $path = public_path() . '/' . config('attendize.event_bg_images') . '/' . $organiser_id;
+
+        if (!file_exists($path)) {
+            File::makeDirectory($path, $mode = 0777, true, true);
+        }
+
+        $files = File::files(public_path() . '/' . config('attendize.event_bg_images') . '/' . $organiser_id);
 
         foreach ($files as $image) {
             $images[] = str_replace(public_path(), '', $image);
         }
 
-        return $images;
+         return $images;
     }
 
     /**
@@ -54,17 +62,23 @@ class EventCustomizeController extends MyBaseController
      *
      * @return array
      */
-    public function getAvailableBackgroundImagesThumbs()
+    public function getAvailableBackgroundImagesThumbs($organiser_id)
     {
         $images = [];
 
-        $files = File::files(public_path() . '/' . config('attendize.event_bg_images') . '/thumbs');
+        $path = public_path() . '/' . config('attendize.event_bg_images') . '/' . $organiser_id . '/thumbs';
+
+        if (!file_exists($path)) {
+            File::makeDirectory($path, $mode = 0777, true, true);
+        }
+
+        $files = File::files(public_path() . '/' . config('attendize.event_bg_images') . '/' . $organiser_id . '/thumbs');
 
         foreach ($files as $image) {
             $images[] = str_replace(public_path(), '', $image);
         }
 
-        return $images;
+         return $images;
     }
 
     /**
@@ -339,28 +353,28 @@ class EventCustomizeController extends MyBaseController
         /*
          * Not in use for now.
          */
-        if ($request->hasFile('bg_image_path') && $request->get('bg_type') == 'custom_image') {
-            $path = public_path() . '/' . config('attendize.event_images_path');
-            $filename = 'event_bg-' . md5($event->id) . '.' . strtolower($request->file('bg_image_path')->getClientOriginalExtension());
+        // if ($request->hasFile('bg_image_path') && $request->get('bg_type') == 'custom_image') {
+        //     $path = public_path() . '/' . config('attendize.event_images_path');
+        //     $filename = 'event_bg-' . md5($event->id) . '.' . strtolower($request->file('bg_image_path')->getClientOriginalExtension());
 
-            $file_full_path = $path . '/' . $filename;
+        //     $file_full_path = $path . '/' . $filename;
 
-            $request->file('bg_image_path')->move($path, $filename);
+        //     $request->file('bg_image_path')->move($path, $filename);
 
-            $img = Image::make($file_full_path);
+        //     $img = Image::make($file_full_path);
 
-            $img->resize(1400, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+        //     $img->resize(1400, null, function ($constraint) {
+        //         $constraint->aspectRatio();
+        //         $constraint->upsize();
+        //     });
 
-            $img->save($file_full_path, 75);
+        //     $img->save($file_full_path, 75);
 
-            $event->bg_image_path = config('attendize.event_images_path') . '/' . $filename;
-            $event->bg_type = 'custom_image';
+        //     $event->bg_image_path = config('attendize.event_images_path') . '/' . $filename;
+        //     $event->bg_type = 'custom_image';
 
-            \Storage::put(config('attendize.event_images_path') . '/' . $filename, file_get_contents($file_full_path));
-        }
+        //     \Storage::put(config('attendize.event_images_path') . '/' . $filename, file_get_contents($file_full_path));
+        // }
 
         $event->save();
 

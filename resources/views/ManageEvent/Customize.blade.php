@@ -372,7 +372,7 @@
 
                                     <?php
                                     // echo "<pre>";
-                                    // print_r($event);
+                                    // print_r($available_bg_images_thumbs);
                                     // echo "</pre>";
 
                                     //$path = public_path() . '/' . config('attendize.event_bg_images') . '/test';

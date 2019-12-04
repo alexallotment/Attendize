@@ -201,6 +201,31 @@
 
         <div class="row">
             <div class="col-md-6">
+                    {!!  Form::label('age_restriction_disclaimer', trans("Event.age_restriction_disclaimer"),
+                        [
+                        'class'=>'control-label '
+                        ])
+                    !!}
+
+                    {!!  Form::text('age_restriction_disclaimer', null, [
+                        'class' => 'form-control'
+                    ])  !!}
+            </div>
+            <div class="col-md-6">
+                    {!!  Form::label('sold_out_link_redirect', trans("Event.sold_out_link_redirect"),
+                        [
+                        'class'=>'control-label '
+                        ])
+                    !!}
+
+                    {!!  Form::text('sold_out_link_redirect', null, [
+                        'class' => 'form-control'
+                    ])  !!}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
                    {!! Form::label('event_image', trans("Event.event_flyer"), array('class'=>'control-label ')) !!}
                    {!! Form::styledFile('event_image', 1) !!}

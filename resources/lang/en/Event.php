@@ -14,6 +14,8 @@ return array (
   'create_event' => 'Create Event',
   'current_event_flyer' => 'Current Event Flyer',
   'current_event_ticket_background' => 'Current Ticket Background',
+  'age_restriction_disclaimer' => 'Age Restriction Disclaimer',
+  'sold_out_link_redirect' => 'Sold Out Link Redirect',
   'customize_event' => 'Customize Event',
   'delete?' => 'Delete?',
   'enter_existing' => 'Select From Existing Venues',
