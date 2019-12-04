@@ -152,6 +152,37 @@ class EventCustomizeController extends MyBaseController
         $event->ticket_sub_text_color = $request->get('ticket_sub_text_color');
         $event->is_1d_barcode_enabled = $request->get('is_1d_barcode_enabled');
 
+        if ($request->hasFile('ticket_background_image')) {
+            $path = public_path() . '/' . config('attendize.event_ticket_bg_image_path');
+            $filename = 'event_ticket_background_image-' . md5(time() . $event->id) . '.' . strtolower($request->file('ticket_background_image')->getClientOriginalExtension());
+
+            $file_full_path = $path . '/' . $filename;
+
+            $request->file('ticket_background_image')->move($path, $filename);
+
+            $img = Image::make($file_full_path);
+
+            $img->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->save($file_full_path);
+
+            /* Upload to s3 */
+            \Storage::put(config('attendize.event_ticket_bg_image_path') . '/' . $filename, file_get_contents($file_full_path));
+
+            $eventImage = EventImage::createNew();
+            $eventImage->image_path = config('attendize.event_ticket_bg_image_path') . '/' . $filename;
+            $eventImage->event_id = $event->id;
+            $eventImage->image_type = 'ticket_background';
+            $eventImage->save();
+        }
+
+        if ($request->get('remove_current_ticket_bg_image') == '1') {
+            EventImage::where(['event_id' => $event->id, 'image_type' => 'ticket_background'])->delete();
+        }
+
         $event->save();
 
         return response()->json([

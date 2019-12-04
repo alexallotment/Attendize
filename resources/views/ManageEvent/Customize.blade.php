@@ -564,12 +564,49 @@
                                                             ])  !!}
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 {!! Form::label('is_1d_barcode_enabled', trans("Ticket.show_1d_barcode"), ['class' => 'control-label required']) !!}
                                 {!! Form::select('is_1d_barcode_enabled', [1 => trans("basic.yes"), 0 => trans("basic.no")], $event->is_1d_barcode_enabled, ['class'=>'form-control']) !!}
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="float-l">
+                                <div class="form-group">
+                                    {!! Form::label('ticket_background_image', trans("Ticket.ticket_background_image"), ['class' => 'control-label']) !!}
+                                    {!! Form::styledFile('ticket_background_image', 1) !!}
+                                </div>
+
+                                <?php
+                                $ticket_background_exists = false;
+                                $ticket_background_index = -1;
+
+                                foreach( $event->images as $key => $image ) {
+                                    if($image->image_type == 'ticket_background') {
+                                        $ticket_background_exists = true;
+                                        $ticket_background_index = $key;
+                                        break;
+                                    }
+                                }
+                                ?>
+
+                                @if($ticket_background_exists)
+                                    {!! Form::label('', trans("Event.current_event_ticket_background"), array('class'=>'control-label ')) !!}
+                                    <div class="form-group">
+                                        <div class="well well-sm well-small">
+                                        {!! Form::label('remove_current_ticket_bg_image', trans("Event.delete?"), array('class'=>'control-label ')) !!}
+                                        {!! Form::checkbox('remove_current_ticket_bg_image') !!}
+
+                                        </div>
+                                    </div>
+                                    <div class="thumbnail">
+                                        {!!HTML::image('/'.$event->images->get($ticket_background_index)['image_path'])!!}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
                     </div>
                     <div class="row">
 

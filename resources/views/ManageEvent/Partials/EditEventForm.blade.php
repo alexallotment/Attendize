@@ -156,6 +156,19 @@
                    {!! Form::styledFile('event_image', 1) !!}
                 </div>
 
+                <?php
+                $flyer_background_exists = false;
+                $flyer_background_index = -1;
+    
+                foreach( $event->images as $key => $image ) {
+                    if($image->image_type == 'flyer') {
+                        $flyer_background_exists = true;
+                        $flyer_background_index = $key;
+                        break;
+                    }
+                }
+                ?>
+
                 @if($event->images->count())
                     <div class="form-group">
                         {!! Form::label('event_image_position', trans("Event.event_image_position"), array('class'=>'control-label')) !!}
@@ -180,6 +193,25 @@
                     </div>
                 @endif
             </div>
+
+            <div class="col-md-6">
+                <div class="float-l">
+                    @if($flyer_background_exists)
+                    {!! Form::label('', trans("Event.current_event_flyer"), array('class'=>'control-label ')) !!}
+                    <div class="form-group">
+                        <div class="well well-sm well-small">
+                           {!! Form::label('remove_current_image', trans("Event.delete?"), array('class'=>'control-label ')) !!}
+                           {!! Form::checkbox('remove_current_image') !!}
+
+                        </div>
+                    </div>
+                    <div class="thumbnail">
+                       {!!HTML::image('/'.$event->images->get($flyer_background_index)['image_path'])!!}
+                    </div>
+                    @endif
+                </div>
+            </div>
+
             <div class="col-md-6">
                 <div class="float-l">
                     @if($event->images->count())

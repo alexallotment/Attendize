@@ -51,19 +51,6 @@
         </style>
 
     </head>
-
-    <?php
-    if($event->images->where('image_type', '=', 'ticket_background')->count()) {
-        $background_img = url('/') . '/' . $event->images->where('image_type', '=', 'ticket_background')->first()->image_path;
-        $default_bg = false;
-    } else {
-        $background_img = url('/') . '/assets/images/allotment-ticket-design-crowd-default-image.jpg';
-        $default_bg = true;
-    }
-
-    $logo_svg = url('/') . '/assets/images/allotment-logo-white.svg';
-    ?>
-
     <body style="background-color: #FFFFFF; font-family: Arial, Helvetica, sans-serif;">
         <div class="container">
             @foreach($attendees as $attendee)

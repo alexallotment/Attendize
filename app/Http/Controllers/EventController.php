@@ -51,6 +51,9 @@ class EventController extends MyBaseController
         $event->title = $request->get('title');
         $event->description = strip_tags($request->get('description'));
         $event->start_date = $request->get('start_date');
+        $event->age_restriction = $request->get('age_restriction');
+        $event->line_up = $request->get('line_up');
+        $event->promoter = $request->get('promoter');
 
         /*
          * Venue location info (Usually auto-filled from google maps)
@@ -189,6 +192,7 @@ class EventController extends MyBaseController
             $eventImage = EventImage::createNew();
             $eventImage->image_path = config('attendize.event_images_path') . '/' . $filename;
             $eventImage->event_id = $event->id;
+            $eventImage->image_type = 'flyer';
             $eventImage->save();
         }
 
@@ -225,6 +229,9 @@ class EventController extends MyBaseController
         $event->title = $request->get('title');
         $event->description = strip_tags($request->get('description'));
         $event->start_date = $request->get('start_date');
+        $event->age_restriction = $request->get('age_restriction');
+        $event->line_up = $request->get('line_up');
+        $event->promoter = $request->get('promoter');
         $event->google_tag_manager_code = $request->get('google_tag_manager_code');
 
         /*
@@ -269,8 +276,14 @@ class EventController extends MyBaseController
         $event->end_date = $request->get('end_date');
         $event->event_image_position = $request->get('event_image_position');
 
+        // if ($request->get('remove_current_image') == '1') {
+        //     EventImage::where('event_id', '=', $event->id)->delete();
+        // }
+
         if ($request->get('remove_current_image') == '1') {
-            EventImage::where('event_id', '=', $event->id)->delete();
+            EventImage::where(['event_id' => $event->id, 'image_type' => 'flyer'])->delete();
+        } elseif($request->get('remove_current_ticket_bg_image') == '1') {
+            EventImage::where(['event_id' => $event->id, 'image_type' => 'ticket_background'])->delete();
         }
 
         $event->save();
@@ -294,11 +307,13 @@ class EventController extends MyBaseController
 
             \Storage::put(config('attendize.event_images_path') . '/' . $filename, file_get_contents($file_full_path));
 
-            EventImage::where('event_id', '=', $event->id)->delete();
+            //EventImage::where('event_id', '=', $event->id)->delete();
+            EventImage::where(['event_id' => $event->id, 'image_type' => 'flyer'])->delete();
 
             $eventImage = EventImage::createNew();
             $eventImage->image_path = config('attendize.event_images_path') . '/' . $filename;
             $eventImage->event_id = $event->id;
+            $eventImage->image_type = 'flyer';
             $eventImage->save();
         }
 
