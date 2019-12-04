@@ -39,6 +39,16 @@
                     @endif
                 </div>
             </div>
+
+            <div class="footer-links">
+                {{-- <a class="adminLink "
+                href="/terms-conditions">Terms & Conditions</a> --}}
+                <a class="adminLink "
+                href="/privacy-policy">Privacy Policy</a>
+                <a class="adminLink "
+                href="/contact">Contact Us</a>
+            </div>
+
         </div>
     </div>
     {!! Form::close() !!}

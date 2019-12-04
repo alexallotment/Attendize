@@ -1,9 +1,4 @@
-<section id="tickets" class="container">
-    <div class="row">
-        <h1 class='section_head'>
-            @lang("Public_ViewEvent.tickets")
-        </h1>
-    </div>
+<section id="tickets">
 
     @if($event->end_date->isPast())
         <div class="alert alert-boring">
@@ -14,26 +9,29 @@
         @if($tickets->count() > 0)
 
             {!! Form::open(['url' => route('postValidateTickets', ['event_id' => $event->id]), 'class' => 'ajax']) !!}
-            <div class="row">
-                <div class="col-md-12">
+
                     <div class="content">
                         <div class="tickets_table_wrap">
                             <table class="table">
+                                <tr class="ticket-section-title">
+                                    <td>SELECT TICKETS</td>
+                                </tr>
+
+
+
+
                                 <?php
                                 $is_free_event = true;
                                 ?>
                                 @foreach($tickets->where('is_hidden', false) as $ticket)
                                     <tr class="ticket" property="offers" typeof="Offer">
                                         <td>
-                                <span class="ticket-title semibold" property="name">
-                                    {{$ticket->title}}
-                                </span>
-                                            <p class="ticket-descripton mb0 text-muted" property="description">
-                                                {{$ticket->description}}
-                                            </p>
-                                        </td>
-                                        <td style="width:200px; text-align: right;">
-                                            <div class="ticket-pricing" style="margin-right: 20px;">
+                                        <p>
+                                            <span class="ticket-title semibold" property="name">
+                                                {{$ticket->title}}
+                                            </span>
+                                            <br/>
+                                            <span class="event-ticket-listing-price">
                                                 @if($ticket->is_free)
                                                     @lang("Public_ViewEvent.free")
                                                     <meta property="price" content="0">
@@ -48,8 +46,17 @@
                                                     <meta property="price"
                                                           content="{{ number_format($ticket->price, 2, '.', '') }}">
                                                 @endif
-                                            </div>
+                                            </span>
+                                        </p>
+                                            <!-- <p class="ticket-descripton mb0 text-muted" property="description">
+                                                {{$ticket->description}}
+                                            </p> -->
                                         </td>
+                                        <!-- <td style="width:200px; text-align: right;">
+                                            <div class="ticket-pricing" style="margin-right: 20px;">
+
+                                            </div>
+                                        </td> -->
                                         <td style="width:85px;">
                                             @if($ticket->is_paused)
 
@@ -112,32 +119,31 @@
                                 </tr>
                                 @endif
                                 <tr>
-                                    <td colspan="3" style="text-align: center">
-                                        @lang("Public_ViewEvent.below_tickets")
+                                    <td colspan="3">
+                                        <span><strong>Delivery Method</strong></span><br/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="event-tickets-section-etickets">
+                                        <span><strong>eTickets</strong></span><br/>
+                                        <span class="free">Free</span>. Print your tickets.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="event-ticket-section-terms">
+                                        <!-- @lang("Public_ViewEvent.below_tickets") -->
+                                        <span><strong>Terms & Conditions</strong></span><br/>
+                                        <span>Any Ticket holder who is 18 and over that is unable to present valid identification indicating that they are at least 18 years of age will not be admitted to the event, and will not be eligible for a refund.</span>
                                     </td>
                                 </tr>
                                 <tr class="checkout">
                                     <td colspan="3">
-                                        @if(!$is_free_event)
-                                            <div class="hidden-xs pull-left">
-                                                <img class=""
-                                                     src="{{asset('assets/images/public/EventPage/credit-card-logos.png')}}"/>
-                                                @if($event->enable_offline_payments)
-
-                                                    <div class="help-block" style="font-size: 11px;">
-                                                        @lang("Public_ViewEvent.offline_payment_methods_available")
-                                                    </div>
-                                                @endif
-                                            </div>
-
-                                        @endif
-                                        {!!Form::submit(trans("Public_ViewEvent.register"), ['class' => 'btn btn-lg btn-primary pull-right'])!!}
+                                        {!!Form::submit('Agree & Checkout', ['class' => 'btn btn-lg btn-primary pull-right'])!!}
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                    </div>
-                </div>
+               
             </div>
             {!! Form::hidden('is_embedded', $is_embedded) !!}
             {!! Form::close() !!}

@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!--
-                  _   _                 _ _
-             /\  | | | |               | (_)
-            /  \ | |_| |_ ___ _ __   __| |_ _______   ___ ___  _ __ ___
-           / /\ \| __| __/ _ \ '_ \ / _` | |_  / _ \ / __/ _ \| '_ ` _ \
-          / ____ \ |_| ||  __/ | | | (_| | |/ /  __/| (_| (_) | | | | | |
-         /_/    \_\__|\__\___|_| |_|\__,_|_/___\___(_)___\___/|_| |_| |_|
-
-        -->
-        <title>{{{$event->title}}} - Attendize.com</title>
+        <title>{{{$event->title}}} - Allotment Productions</title>
 
 
         <meta charset="utf-8" />
@@ -27,7 +18,9 @@
         <meta property="og:image" content="{{config('attendize.cdn_url_user_assets').'/'.$event->images->first()['image_path']}}" />
         @endif
         <meta property="og:description" content="{{Str::words(strip_tags(Markdown::parse($event->description))), 20}}" />
-        <meta property="og:site_name" content="Attendize.com" />
+        <meta property="og:site_name" content="Allotment Tickets" />
+
+        <link rel="stylesheet" href="https://use.typekit.net/xzt0goi.css">
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -36,39 +29,13 @@
 
        {!!HTML::style(config('attendize.cdn_url_static_assets').'/assets/stylesheet/frontend.css')!!}
 
-        <!--Bootstrap placeholder fix-->
-        <style>
-            ::-webkit-input-placeholder { /* WebKit browsers */
-                color:    #ccc !important;
-            }
-            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-                color:    #ccc !important;
-                opacity:  1;
-            }
-            ::-moz-placeholder { /* Mozilla Firefox 19+ */
-                color:    #ccc !important;
-                opacity:  1;
-            }
-            :-ms-input-placeholder { /* Internet Explorer 10+ */
-                color:    #ccc !important;
-            }
-
-            input, select {
-                color: #999 !important;
-            }
-
-            .btn {
-                color: #fff !important;
-            }
-
-        </style>
         @if ($event->bg_type == 'color' || Input::get('bg_color_preview'))
-            <style>body {background-color: {{(Input::get('bg_color_preview') ? '#'.Input::get('bg_color_preview') : $event->bg_color)}} !important; }</style>
+            <style>.background-container {background-color: {{(Input::get('bg_color_preview') ? '#'.Input::get('bg_color_preview') : $event->bg_color)}} !important; }</style>
         @endif
 
         @if (($event->bg_type == 'image' || $event->bg_type == 'custom_image' || Input::get('bg_img_preview')) && !Input::get('bg_color_preview'))
             <style>
-                body {
+                .background-container {
                     background: url({{(Input::get('bg_img_preview') ? URL::to(Input::get('bg_img_preview')) :  asset(config('attendize.cdn_url_static_assets').'/'.$event->bg_image_path))}}) no-repeat center center fixed;
                     background-size: cover;
                 }
@@ -77,8 +44,25 @@
 
     </head>
     <body class="attendize">
+        <div class="background-container">
+            <div class="background-container-overlay"></div>
+        </div>
         <div id="event_page_wrap" vocab="http://schema.org/" typeof="Event">
-            @yield('content')
+            <div class="container">
+                <div class="allotment-event-page-top"><span>Powered By</span> <span>Allotment</span> <span>Productions</span></div>
+                <div class="event_page_content">
+                    @yield('content')
+                    <div class="event-footer-section">
+                        <a class="adminLink "
+                        href="/terms-conditions">Terms & Conditions</a>
+                        <a class="adminLink "
+                        href="/privacy-policy">Privacy Policy</a>
+                        <a class="adminLink "
+                        href="/contact">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+            
 
             {{-- Push for sticky footer--}}
             @stack('footer')
@@ -86,9 +70,6 @@
 
         {{-- Sticky Footer--}}
         @yield('footer')
-
-        <a href="#intro" style="display:none;" class="totop"><i class="ico-angle-up"></i>
-            <span style="font-size:11px;">@lang("basic.TOP")</span></a>
 
         @include("Shared.Partials.LangScript")
         {!!HTML::script(config('attendize.cdn_url_static_assets').'/assets/javascript/frontend.js')!!}
