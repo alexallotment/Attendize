@@ -1,4 +1,8 @@
 <?php
+// REDIRECT 
+Route::get('/e/8/fontaines-dc-norwich', function() {
+    return Redirect::to('/e/10/fontaines-dc-norwich-feb-2020');
+});
 
 Route::group(
     [

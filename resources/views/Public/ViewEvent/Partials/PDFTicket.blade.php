@@ -6,6 +6,7 @@
         </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+        <link rel="stylesheet" href="https://use.typekit.net/xzt0goi.css">
 <style>
  {{$css}}
 </style>
@@ -14,6 +15,16 @@
         </style>
 
         <style>
+            h1, h2, h3, h4, h5, h6 {
+                text-align: center;
+                text-transform: uppercase;
+            }
+
+            body {
+                font-family: din-condensed, sans-serif!important;
+                font-weight: 400;
+                font-style: normal;
+            }
 
             .bottom_info {
                 text-align: center;
@@ -30,28 +41,206 @@
                 top: 0px;
             }
 
+            .ticket .layout_even {
+                width: 440px;
+            }
 
             .ticket {
-                border: 1px solid {{$event->ticket_border_color}} !important;
-                background: {{$event->ticket_bg_color}} !important;
-                color: {{$event->ticket_sub_text_color}} !important;
+                /* border: 1px solid {{$event->ticket_border_color}} !important; */
+                /* background: {{$event->ticket_bg_color}} !important; */
+                border: 0;
                 border-left-color: {{$event->ticket_border_color}} !important;
+                padding: 0;
             }
             .ticket h4 {color: {{$event->ticket_text_color}} !important;}
             .ticket .logo {
-                border-left: 1px solid {{$event->ticket_border_color}} !important;
-                border-bottom: 1px solid {{$event->ticket_border_color}} !important;
+                /* border-left: 1px solid {{$event->ticket_border_color}} !important;
+                border-bottom: 1px solid {{$event->ticket_border_color}} !important; */
+                top: auto;
+                bottom: 0;
+                border: 0;
+                padding: 0;
             }
             .ticket .barcode {
-                border-right: 1px solid {{$event->ticket_border_color}} !important;
+                /* border-right: 1px solid {{$event->ticket_border_color}} !important;
                 border-bottom: 1px solid {{$event->ticket_border_color}} !important;
-                border-top: 1px solid {{$event->ticket_border_color}} !important;
+                border-top: 1px solid {{$event->ticket_border_color}} !important; */
+                border: 0;
+                bottom: 30px;
+                left: 30px;
+                width: 50px;
+                height: 50px;
+                padding: 4px;
             }
 
+            .ticket .logo {
+                top: auto;
+                bottom: 10px;
+                right: 10px;
+                border: 0;
+                z-index: 999;
+            }
+
+            .ticket .logo img {
+                width: 72px;
+                height: auto;
+            }
+
+            .allotment-page-container .ticket {
+                page-break-before: always;
+            }
+
+            .ticket-date {
+                margin: 6px auto;
+            }
+
+            .ticket-date span:first-child {
+                font-size: 17px;
+                color: {{$event->ticket_text_color}};
+            }
+
+            .allotment-left-text {
+                top: 90px;
+                font-size: 32px;
+                color: #fff;
+                position: absolute;
+                transform: rotate(90deg);
+                -webkit-transform: rotate(90deg);
+                left: -4%;
+                /* letter-spacing: 3px; */
+            }
+
+            .allotment-left-text.allotment-name {
+                top: 60px;
+                font-size: 14px;
+                left: 55px;
+                text-transform: uppercase;
+                white-space: nowrap;
+                width: 20px;
+            }
+
+            .allotment-right-text {
+                color: #fff;
+                font-size: 20px;
+                text-transform: uppercase;
+                -webkit-transform: rotate(270deg);
+                transform: rotate(270deg);
+                position: absolute;
+                top: 175px;
+                right: 10px;
+                font-weight: 300;
+                -webkit-backface-visibility: hidden;
+                /* letter-spacing: 3px; */
+                left: 92%;
+            }
+
+            .allotment-layout-even-bg {
+                background: #222222;
+                height: 155%;
+                bottom: -23%;
+                width: 440px;
+                left: 150px;
+                box-shadow: 0 0 0 0 transparent, 10px 0px 0px 0px #b6640e;
+                -webkit-transform: rotate(13deg);
+                transform: rotate(13deg);
+                border-right: 10px solid #8d4902;
+                position: absolute;
+                z-index: -1;
+                -webkit-backface-visibility: hidden;
+            }
+
+            .allotment-background-right {
+                background: #df7a06;
+                height: 100%;
+                width: 200px;
+                position: absolute;
+                right: 0;
+                z-index: -2;
+            }
+
+            .ticket .layout_even {
+                left: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            h2.allotment-promoter {
+                color: #fff;
+                /* letter-spacing: 3px; */
+                margin-top: 10px;
+                margin-bottom: 25px;
+                font-size: 22px;
+            }
+
+            h2.allotment-start-date-price {
+                margin-bottom: 10px;
+                margin-top: 0;
+                font-size: 20px;
+            }
+
+            h2.allotment-start-date-price span {
+                font-size: 20px;
+                /* letter-spacing: 3px; */
+            }
+
+            h2.allotment-start-date-price span:first-child {
+                color: #c3742f;
+            }
+
+            h2.allotment-start-date-price span:nth-child(2),
+            h2.allotment-start-date-price span:nth-child(3) {
+                color: #fff;
+            }
+
+            h1.allotment-organiser {
+                color: #fff;
+                font-size: 82px;
+                text-shadow: 5px 5px #080808;
+                font-weight: 700;
+                /* letter-spacing: 1px; */
+            }
+
+            h2.allotment-line-up {
+                color: #c3742f;
+                font-size: 16px;
+                margin-top: 0;
+                /* letter-spacing: 3px; */
+                margin-bottom: 5px;
+            }
+
+            h2.allotment-venue-start-time {
+                color: #fff;
+                /* letter-spacing: 3px; */
+                font-size: 22px;
+                margin-top: 0;
+                margin-bottom: 20px;
+            }
+
+            h2.allotment-address-age-restriction {
+                color: #fff;
+                margin-top: 0;
+                font-size: 14px;
+                /* letter-spacing: 3px; */
+            }
+
+            h2.allotment-address-age-restriction span:nth-child(2) {
+                color: #c3742f;
+                margin-left: 10px;
+            }
+
+            .allotment-orange-right {
+                background: #df7a06;
+                height: 330px;
+                bottom: -15px;
+                width: 250px;
+                position: absolute;
+                right: 0;
+                z-index: -2;
+            }
         </style>
 
     </head>
-
+    
     <?php
     if($event->images->where('image_type', '=', 'ticket_background')->count()) {
         $background_img = url('/') . '/' . $event->images->where('image_type', '=', 'ticket_background')->first()->image_path;
@@ -63,58 +252,81 @@
 
     $logo_svg = url('/') . '/assets/images/allotment-logo-white.svg';
     ?>
-
     <body style="background-color: #FFFFFF; font-family: Arial, Helvetica, sans-serif;">
-        <div class="container">
+        <div class="container allotment-page-container">
             @foreach($attendees as $attendee)
                 @if(!$attendee->is_cancelled)
-                    <div class="ticket">
+                    <div class="ticket" 
+                    style="
+                    background-color: #ddd;
+                    background-image: url('{{$background_img}}');
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center center;
+                    "
+                    >
+
+                    <!--<div class="ticket">-->
 
                         <div class='logo'>
-				<img alt="{{$event->organiser->full_logo_path}}" src="data:image/png;base64, {{$image}}" />
-                            @if(isset($images) && count($images) > 0)
-                                @foreach($images as $img)
-                                    <BR><img src="data:image/png;base64, {{$img}}" />
-                                @endforeach
-                            @endif
+				            <img alt="Allotment Productions" src="{{$logo_svg}}" />
                         </div>
                         <div class="layout_even">
-                        <div class="event_details">
-                                <h4>@lang("Ticket.event")</h4>
-                            {{$event->title}}
-                                <h4>@lang("Ticket.organiser")</h4>
-                            {{$event->organiser->name}}
-                                <h4>@lang("Ticket.venue")</h4>
-                            {{$event->venue_name}}
-                                <h4>@lang("Ticket.start_date_time")</h4>
-                                {{$event->startDateFormatted()}}
-                                <h4>@lang("Ticket.end_date_time")</h4>
-                                {{$event->endDateFormatted()}}
+                            @if($default_bg == true)
+                                <div class="allotment-layout-even-bg"></div>
+                                <div class="allotment-orange-right"></div>
+                            @endif
+                            <h2 class="allotment-promoter">{{$event->promoter}}</h2>
+                            <h2 class="allotment-start-date-price">
+                                <span>{{$event->start_date->format('l jS F Y')}}</span>
+                                <span>/</span>
+                                <span>Price £{{$attendee->ticket->total_price}}</span>
+                            </h2>
+                            <h1 class="allotment-organiser">
+                                {{$event->organiser->name}}
+                            </h1>
+
+                            @if($event->line_up != '')
+                                <h2 class="allotment-line-up">
+                                    {{$event->line_up}}
+                                </h2>
+                            @endif
+
+                            <h2 class="allotment-venue-start-time">
+                                <span>{{$event->venue_name}}</span>
+                                <span>/</span>
+                                <span>At {{$event->start_date->format('h:ia')}}</span>
+                            </h2>
+
+                            <h2 class="allotment-address-age-restriction">
+                                <span>
+                                    {{$event->location_address_line_1}}, 
+                                    <!-- {{$event->location_address_line_2}},  -->
+                                    {{$event->location_state}}, 
+                                    {{$event->location_post_code}}
+                                </span>
+                                <span>
+                                    Age {{$event->age_restriction}}
+                                </span>
+                            </h2>
+                        </div>
+    
+                        <div class="allotment-right-text">
+                            tickets.allotment.pro
+                        </div>
+                        <div class="allotment-left-text">
+                            {{$attendee->reference}}
+                        </div>
+                        <div class="allotment-left-text allotment-name">
+                            {{$attendee->first_name.' '.$attendee->last_name}}
                         </div>
 
-                        <div class="attendee_details">
-                                <h4>@lang("Ticket.name")</h4>
-                            {{$attendee->first_name.' '.$attendee->last_name}}
-                                <h4>@lang("Ticket.ticket_type")</h4>
-                            {{$attendee->ticket->title}}
-                                <h4>@lang("Ticket.order_ref")</h4>
-                            {{$order->order_reference}}
-                                <h4>@lang("Ticket.attendee_ref")</h4>
-                            {{$attendee->reference}}
-                                <h4>@lang("Ticket.price")</h4>
-								@php
-	                            	// Calculating grand total including tax
-					                $grand_total = $attendee->ticket->total_price;
-					                $tax_amt = ($grand_total * $event->organiser->tax_value) / 100;
-					                $grand_total = $tax_amt + $grand_total;
-	                            @endphp
-	                            {{money($grand_total, $order->event->currency)}} @if ($attendee->ticket->total_booking_fee) (inc. {{money($attendee->ticket->total_booking_fee, $order->event->currency)}} @lang("Public_ViewEvent.inc_fees")) @endif @if ($event->organiser->tax_name) (inc. {{money($tax_amt, $order->event->currency)}} {{$event->organiser->tax_name}})
-	                            <br><br>{{$event->organiser->tax_name}} ID: {{ $event->organiser->tax_id }}
-                                @endif
-                            </div>
-                        </div>
+
+
+
+
                         <div class="barcode">
-                            {!! DNS2D::getBarcodeSVG($attendee->private_reference_number, "QRCODE", 6, 6) !!}
+                            {!! DNS2D::getBarcodeSVG($attendee->private_reference_number, "QRCODE", 2, 2) !!}
                         </div>
                         @if($event->is_1d_barcode_enabled)
                         <div class="barcode_vertical">
@@ -122,14 +334,11 @@
                         </div>
                         @endif
                     </div>
+                    <!-- <div class="bottom_info">
+                        @include('Shared.Partials.PoweredBy')
+                    </div> -->
                 @endif
             @endforeach
-
-            <div class="bottom_info">
-                {{--Attendize is provided free of charge on the condition the below hyperlink is left in place.--}}
-                {{--See https://www.attendize.com/license.html for more information.--}}
-                @include('Shared.Partials.PoweredBy')
-            </div>
         </div>
     </body>
 </html>

@@ -6,6 +6,7 @@ use App\Models\Event;
 use File;
 use Illuminate\Http\Request;
 use App\Models\Currency;
+use App\Models\EventImage;
 use Image;
 use Validator;
 

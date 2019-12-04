@@ -39,6 +39,8 @@ return array (
   'show_1d_barcode' => 'Show 1D barcode on tickets',
   'ticket_background_image' => 'Ticket Background Image',
   'age_restriction' => 'Age Restriction',
+  'promoter' => 'Promoter',
+  'line_up' => 'Line Up',
   'sold' => 'Sold',
   'start_date_time' => 'Start Date / Time',
   'this_ticket_is_hidden' => 'This ticket is hidden',
