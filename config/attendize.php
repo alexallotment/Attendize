@@ -24,7 +24,7 @@ return [
 
     'app_name'               => 'Attendize Event Ticketing',
     'event_default_bg_color' => '#B23333',
-    'event_default_bg_image' => 'assets/images/public/EventPage/backgrounds/5.jpg',
+    'event_default_bg_image' => 'assets/images/public/EventPage/backgrounds/default-event-image.jpg.jpg',
 
     'event_images_path'      => 'user_content/event_images',
     'event_ticket_bg_image_path'      => 'user_content/ticket_background_image',
@@ -41,7 +41,7 @@ return [
     'ticket_status_on_sale'          => 4,
     'ticket_status_off_sale'         => 5,
 
-    'ticket_booking_fee_fixed'      => 0,
+    'ticket_booking_fee_fixed'      => 1.5,
     'ticket_booking_fee_percentage' => 0,
 
     /* Order statuses */
