@@ -9,7 +9,7 @@ Your tickets are attached to this email. You can also view you order details and
 
 
 <h3>Order Details</h3>
-Order Reference: <b>{{strtoupper($order->order_reference)}}</b><br>
+Order Reference: <b style="text-transform: uppercase;">{{strtoupper($order->order_reference)}}</b><br>
 Order Name: <b>{{$order->full_name}}</b><br>
 Order Date: <b>{{$order->created_at->format(config('attendize.default_datetime_format'))}}</b><br>
 Order Email: <b>{{$order->email}}</b><br>
