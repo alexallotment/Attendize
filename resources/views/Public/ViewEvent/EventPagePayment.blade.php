@@ -13,10 +13,12 @@
 		<div class="row">
 			<div class="col-lg-4">
 				@include('Public.ViewEvent.Partials.EventHeaderSection')
-				@include('Public.ViewEvent.Partials.EventOrderForm')
+				
 			</div>
 
 			<div class="col-lg-8">
+				<h2>Tickets</h2>
+				@include('Public.ViewEvent.Partials.EventOrderForm')
 				@include('Public.ViewEvent.Partials.EventPaymentSection')
 				@include('Public.ViewEvent.Partials.EventFooterSection')
 			</div>
