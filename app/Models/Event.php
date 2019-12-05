@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Ticket;
+use App\Models\ReservedTickets;
+
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Str;
 use URL;
+use Redirect;
 
 class Event extends MyBaseModel
 {
@@ -446,5 +450,38 @@ ICSTemplate;
     public function hasAccessCode($accessCodeId)
     {
         return (is_null($this->access_codes()->where('id', $accessCodeId)->first()) === false);
+    }
+
+    /**
+     * Check availability of tickets, if they are not available and a redirect URL is set then the user
+     * will get redirected.
+     *
+     */
+    public function determineTicketsAvailableForEvent()
+    {
+        //If no redirect URL has been set then just let execution happen has normal
+        if(!empty($this->sold_out_link_redirect)) {
+            return '';
+        }
+
+        //Calculate if the tickets for the event are sold out or not and redirect if needed
+        $event_tickets_available = Ticket::where('event_id', $this->id)
+            ->sum('quantity_available');
+
+        $quantity_reserved = ReservedTickets::where('event_id', $this->id)
+            ->sum('quantity_reserved');
+
+        $quantity_sold = Ticket::where('event_id', $this->id)
+            ->sum('quantity_sold');
+
+        $tickets_unavailable_count = $quantity_sold + $quantity_reserved;
+
+        $final_availability = $event_tickets_available - $tickets_unavailable_count;
+
+        if($final_availability < 1) {
+            return Redirect::away($this->sold_out_link_redirect);
+        } else {
+            return '';
+        }
     }
 }
