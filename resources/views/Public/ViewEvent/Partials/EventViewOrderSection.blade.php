@@ -47,7 +47,7 @@
     }
 </style>
 
-<section id="order_form" class="container">
+<section id="order_form" class="container2">
     <div class="row">
         <div class="col-md-12 order_header">
             <span class="massive-icon">
