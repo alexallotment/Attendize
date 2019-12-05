@@ -91,7 +91,7 @@
                         </div>
 
                         <div class="col-sm-4 col-xs-6">
-                            <b>@lang("Public_ViewEvent.reference")</b><br> {{$order->order_reference}}
+                            <b>@lang("Public_ViewEvent.reference")</b><br> <span class="text-uppercase">{{$order->order_reference}}</span>
                         </div>
 
                         <div class="col-sm-4 col-xs-6">
