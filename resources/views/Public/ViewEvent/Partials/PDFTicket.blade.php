@@ -315,7 +315,7 @@
                         <div class="allotment-right-text">
                             tickets.allotment.pro
                         </div>
-                        <div class="allotment-left-text">
+                        <div class="allotment-left-text" style="text-transform:uppercase;">
                             {{$attendee->reference}}
                         </div>
                         <div class="allotment-left-text allotment-name">
