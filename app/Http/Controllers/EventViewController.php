@@ -9,6 +9,7 @@ use App\Models\EventAccessCodes;
 use App\Models\EventStats;
 use Auth;
 use Cookie;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mail;
 use Validator;
