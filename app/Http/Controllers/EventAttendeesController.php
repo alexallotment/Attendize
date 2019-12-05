@@ -578,26 +578,28 @@ class EventAttendeesController extends MyBaseController
             $excel->setCreator(config('attendize.app_name'))
                 ->setCompany(config('attendize.app_name'));
 
-            $excel->sheet('attendees_sheet_1', function ($sheet) use ($event_id) {
-                DB::connection();
-                $data = DB::table('attendees')
-                    ->where('attendees.event_id', '=', $event_id)
-                    ->where('attendees.is_cancelled', '=', 0)
-                    ->where('attendees.account_id', '=', Auth::user()->account_id)
-                    ->join('events', 'events.id', '=', 'attendees.event_id')
-                    ->join('orders', 'orders.id', '=', 'attendees.order_id')
-                    ->join('tickets', 'tickets.id', '=', 'attendees.ticket_id')
-                    ->select([
-                        'attendees.first_name',
-                        'attendees.last_name',
-                        'attendees.email',
-			'attendees.private_reference_number',
-                        'orders.order_reference',
-                        'tickets.title',
-                        'orders.created_at',
-                        DB::raw("(CASE WHEN attendees.has_arrived THEN 'YES' ELSE 'NO' END) AS has_arrived"),
-                        'attendees.arrival_time',
-                    ])->get();
+                    $excel->sheet('attendees_sheet_1', function ($sheet) use ($event_id) {
+                        DB::connection();
+                        $data = DB::table('attendees')
+                            ->where('attendees.event_id', '=', $event_id)
+                            ->where('attendees.is_cancelled', '=', 0)
+                            ->where('attendees.account_id', '=', Auth::user()->account_id)
+                            ->join('events', 'events.id', '=', 'attendees.event_id')
+                            ->join('orders', 'orders.id', '=', 'attendees.order_id')
+                            ->join('tickets', 'tickets.id', '=', 'attendees.ticket_id')
+                            ->select([
+                                'attendees.first_name',
+                                'attendees.last_name',
+                                'attendees.email',
+                                'attendees.private_reference_number',
+                                DB::raw('CONCAT(orders.order_reference, "-", attendees.reference_index)'),
+                                'orders.order_reference',
+                                'tickets.title',
+                                //'orders.order_reference',
+                                'orders.created_at',
+                                DB::raw("(CASE WHEN attendees.has_arrived THEN 'YES' ELSE 'NO' END) AS has_arrived"),
+                                'attendees.arrival_time',
+                            ])->get();
 
                 $data = array_map(function($object) {
                     return (array)$object;
@@ -608,7 +610,8 @@ class EventAttendeesController extends MyBaseController
                     'First Name',
                     'Last Name',
                     'Email',
-		    'Ticket ID',
+                    'QR Code (Ticket ID)',
+                    'Ticket Reference',
                     'Order Reference',
                     'Ticket Type',
                     'Purchase Date',
