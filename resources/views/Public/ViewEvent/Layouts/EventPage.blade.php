@@ -72,7 +72,7 @@
         @yield('footer')
 
         @include("Shared.Partials.LangScript")
-        {!!HTML::script(config('attendize.cdn_url_static_assets').'/assets/javascript/frontend.js')!!}
+        {!!HTML::script(config('attendize.cdn_url_static_assets').'/assets/javascript/frontend.js?v=1.0')!!}
 
 
         @if(isset($secondsToExpire))
