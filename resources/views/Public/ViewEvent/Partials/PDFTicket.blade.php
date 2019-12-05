@@ -45,6 +45,11 @@
                 width: 440px;
             }
 
+            .ticket .age_disclaimer {
+                color: #E16C26;
+                font-size: 10px;
+            }
+
             .ticket {
                 /* border: 1px solid {{$event->ticket_border_color}} !important; */
                 /* background: {{$event->ticket_bg_color}} !important; */
@@ -310,6 +315,9 @@
                                     Age {{$event->age_restriction}}
                                 </span>
                             </h2>
+                        </div>
+                        <div class="layout_even">
+                        <span class="age_disclaimer">{{$event->age_restriction_disclaimer}}</span>
                         </div>
     
                         <div class="allotment-right-text">

@@ -52,13 +52,18 @@
                 <div class="allotment-event-page-top"><span>Powered By</span> <span>Allotment</span> <span>Productions</span></div>
                 <div class="event_page_content">
                     @yield('content')
-                    <div class="event-footer-section">
-                        <a class="adminLink "
-                        href="/terms-conditions">Terms & Conditions</a>
-                        <a class="adminLink "
-                        href="/privacy-policy">Privacy Policy</a>
-                        <a class="adminLink "
-                        href="/contact">Contact Us</a>
+
+                    <div class="row no-gutters">
+                        <div class="no-padding col-lg-12">
+                            <div class="event-footer-section">
+                                <a class="adminLink "
+                                href="/terms-conditions">Terms & Conditions</a>
+                                <a class="adminLink "
+                                href="/privacy-policy">Privacy Policy</a>
+                                <a class="adminLink "
+                                href="/contact">Contact Us</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

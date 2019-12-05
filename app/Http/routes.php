@@ -744,9 +744,22 @@ Route::group(
         });
     });
 
-    Route::get('/', [
-        'as'   => 'index',
-        'uses' => 'IndexController@showIndex',
-    ]);
+    // Route::get('/', [
+    //     'as'   => 'index',
+    //     'uses' => 'IndexController@showIndex',
+    // ]);
+
+    Route::get('/', function () {
+        return Redirect::route('showSelectOrganiser');
+        // I prefer it that way:
+        // return Redirect::route('showOrganiserHome', ["organiser_id"=>1]);
+    });
 });
+
+
+
+
+
+
+
 

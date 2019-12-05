@@ -17,7 +17,7 @@
                 <div class="event_order_form">
 
                     <h3>Terms & Conditions</h3>
-                    <p>By completing your order you accept the <a target="_blank" href="/terms-and-conditions">Terms & Conditions</a>. Refunds can only be offered if the event is postponed or cancelled. </p>
+                    <p class="complete-order-notice">By completing your order you accept the <a target="_blank" href="/terms-and-conditions">Terms & Conditions</a>. Refunds can only be offered if the event is postponed or cancelled. </p>
 
                     <div class="row"><div class="col-md-12">&nbsp;</div></div>
 
