@@ -181,11 +181,6 @@
 
 @section('content')
 
-<pre>
-    <?php
-    echo $event->determineTicketsAvailableForEvent();
-    ?>
-</pre>
     <div class="row">
         <div class="col-md-12">
             <!-- tab -->
