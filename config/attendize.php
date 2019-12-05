@@ -41,7 +41,7 @@ return [
     'ticket_status_on_sale'          => 4,
     'ticket_status_off_sale'         => 5,
 
-    'ticket_booking_fee_fixed'      => 1.5,
+    'ticket_booking_fee_fixed'      => 0,
     'ticket_booking_fee_percentage' => 0,
 
     /* Order statuses */
@@ -61,7 +61,7 @@ return [
 
 
     'default_timezone'           => 30, #Europe/Dublin
-    'default_currency'           => 3, #Euro
+    'default_currency'           => 3, #GBP
     'default_date_picker_format' => env('DEFAULT_DATEPICKER_FORMAT', 'yyyy-MM-dd HH:mm'),
     'default_date_picker_seperator' => env('DEFAULT_DATEPICKER_SEPERATOR', '-'),
     'default_datetime_format'    => env('DEFAULT_DATETIME_FORMAT', 'Y-m-d H:i'),
