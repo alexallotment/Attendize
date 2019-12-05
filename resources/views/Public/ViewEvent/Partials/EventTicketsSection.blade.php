@@ -1,8 +1,4 @@
 <section id="tickets">
-    <pre>
-        {{$tickets}}
-    {{$event}}
-    </pre>
 
     @if($event->end_date->isPast())
         <div class="content">
