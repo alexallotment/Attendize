@@ -28,8 +28,36 @@ class EventViewController extends Controller
     {
         $event = Event::findOrFail($event_id);
 
-        if (!Utils::userOwns($event) && !$event->is_live) {
-            return view('Public.ViewEvent.EventNotLivePage');
+        $countdown = Carbon::now()->timestamp;
+
+        $on_sale_date = $event->on_sale_date;
+
+        if($on_sale_date){
+            $on_sale_date = $on_sale_date->timestamp;
+        } else{
+            $on_sale_date = 0;
+        }
+
+        $time_left = $on_sale_date - $countdown;
+
+        if($time_left =< 0){
+            $time_left = 0;
+        }
+
+        $data_restricted = [
+            'event' => $event,
+            'countdown' => $time_left,
+            'is_embedded' => 0,
+        ];
+
+        if (!Utils::userOwns($event) && !$event->is_live ) {
+            return view('Public.ViewEvent.EventNotLivePage', $data_restricted);
+        } else{
+            if (!Utils::userOwns($event) && ($time_left > 0 && $event->is_live ) ) {
+                $event_stats = new EventStats();
+                $event_stats->updateViewCount($event_id);
+                return view('Public.ViewEvent.EventNotLivePage', $data_restricted);
+            }
         }
 
         $data = [
