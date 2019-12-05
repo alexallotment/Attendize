@@ -16,6 +16,33 @@ Route::group(
 
     /*
      * -------------------------
+     * Terms & Conditions
+     * -------------------------
+     */
+    Route::get('terms-conditions', function() {
+        return view('Public.TermsAndConditions');
+    });
+
+    /*
+     * -------------------------
+     * Privacy Policy
+     * -------------------------
+     */
+    Route::get('privacy-policy', function() {
+        return view('Public.PrivacyPolicy');
+    });
+
+        /*
+     * -------------------------
+     * Contact
+     * -------------------------
+     */
+    Route::get('contact', function() {
+        return view('Public.Contact');
+    });
+
+    /*
+     * -------------------------
      * Installer
      * -------------------------
      */
