@@ -113,15 +113,6 @@ Route::group(
         ]);
 
         /*
-         * Registration / Account creation
-         */
-        Route::get('/signup', [
-            'uses' => 'UserSignupController@showSignup',
-            'as'   => 'showSignup',
-        ]);
-        Route::post('/signup', 'UserSignupController@postSignup');
-
-        /*
          * Confirm Email
          */
         Route::get('signup/confirm_email/{confirmation_code}', [
@@ -231,6 +222,14 @@ Route::group(
      * Backend routes
      */
     Route::group(['middleware' => ['auth', 'first.run']], function () {
+        /*
+         * Registration / Account creation
+         */
+        Route::get('/signup', [
+            'uses' => 'UserSignupController@showSignup',
+            'as'   => 'showSignup',
+        ]);
+        Route::post('/signup', 'UserSignupController@postSignup');
 
         /*
          * Edit User
@@ -744,16 +743,10 @@ Route::group(
         });
     });
 
-    // Route::get('/', [
-    //     'as'   => 'index',
-    //     'uses' => 'IndexController@showIndex',
-    // ]);
-
-    Route::get('/', function () {
-        return Redirect::route('showSelectOrganiser');
-        // I prefer it that way:
-        // return Redirect::route('showOrganiserHome', ["organiser_id"=>1]);
-    });
+    Route::get('/', [
+        'as'   => 'index',
+        'uses' => 'IndexController@showIndex',
+    ]);
 });
 
 
