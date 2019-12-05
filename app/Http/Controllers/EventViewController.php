@@ -29,18 +29,11 @@ class EventViewController extends Controller
         $event = Event::findOrFail($event_id);
 
         $countdown = Carbon::now()->timestamp;
-
-        $on_sale_date = $event->on_sale_date;
-
-        if($on_sale_date){
-            $on_sale_date = $on_sale_date->timestamp;
-        } else{
-            $on_sale_date = 0;
-        }
+        $on_sale_date = $event->on_sale_date->timestamp;
 
         $time_left = $on_sale_date - $countdown;
 
-        if($time_left =< 0){
+        if($time_left < 0){
             $time_left = 0;
         }
 
