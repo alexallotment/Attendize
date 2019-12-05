@@ -323,9 +323,6 @@
                         </div>
 
 
-
-
-
                         <div class="barcode">
                             {!! DNS2D::getBarcodeSVG($attendee->private_reference_number, "QRCODE", 2, 2) !!}
                         </div>
@@ -335,9 +332,7 @@
                         </div>
                         @endif
                     </div>
-                    <!-- <div class="bottom_info">
-                        @include('Shared.Partials.PoweredBy')
-                    </div> -->
+                    
                 @endif
             @endforeach
         </div>
