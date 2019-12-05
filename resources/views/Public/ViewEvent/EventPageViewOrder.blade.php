@@ -5,7 +5,7 @@
 		Order Confirmation
     </div>
     <div class="event-view-order-section">
-        <div class="row no-gutters">
+        <div class="row">
 		    <div class="col-lg-4">
 			    <div class="event_block_pad">
                     @include('Public.ViewEvent.Partials.EventHeaderSection')

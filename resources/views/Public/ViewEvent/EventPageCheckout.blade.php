@@ -9,15 +9,17 @@
 		ORDER DETAILS
 	</div>
     <div class="event-checkout-section">
+        <div class="row">
         <div class="col-lg-4">
             @include('Public.ViewEvent.Partials.EventHeaderSection')
             @include('Public.ViewEvent.Partials.EventOrderForm')
+
         </div>
         <div class="col-lg-8">
             @include('Public.ViewEvent.Partials.EventCreateOrderSection')
+        </div>
         </div>
         <script>var OrderExpires = {{strtotime($expires)}};</script>
         <!-- @include('Public.ViewEvent.Partials.EventFooterSection') -->
     </div>
 @stop
-

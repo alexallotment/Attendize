@@ -1,5 +1,9 @@
 @extends('Public.ViewEvent.Layouts.EventPage')
 
+@section('head')
+    @include('Public.ViewEvent.Partials.GoogleTagManager')
+@endsection
+
 @section('content')
 	<!-- <div class="row">
 		<div class="col-lg-4">
@@ -29,7 +33,7 @@
 	</div>
 
     
-    {{-- @include('Public.ViewEvent.Partials.EventFooterSection') --}}
+    @include('Public.ViewEvent.Partials.EventFooterSection')
    
     {{-- @include('Public.ViewEvent.Partials.EventMapSection') --}}
     {{-- @include('Public.ViewEvent.Partials.EventOrganiserSection') --}}

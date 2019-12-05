@@ -1,7 +1,7 @@
 <section id="tickets">
 
     @if($event->end_date->isPast())
-        <div class="alert alert-boring">
+        <div class="content">
             @lang("Public_ViewEvent.event_already", ['started' => trans('Public_ViewEvent.event_already_ended')])
         </div>
     @else
