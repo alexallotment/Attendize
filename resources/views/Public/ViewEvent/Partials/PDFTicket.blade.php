@@ -280,7 +280,8 @@
                             <h2 class="allotment-start-date-price">
                                 <span>{{$event->start_date->format('l jS F Y')}}</span>
                                 <span>/</span>
-                                <span>Price £{{$attendee->ticket->total_price}}</span>
+                                <!--<span>Price £{{$attendee->ticket->total_price}}</span>-->
+                                <span>Price £{{$attendee->ticket->price}}</span>
                             </h2>
                             <h1 class="allotment-organiser">
                                 {{$event->organiser->name}}
