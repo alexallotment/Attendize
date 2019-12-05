@@ -90,7 +90,11 @@
     @if($event->age_restriction != '')
         <div class="event_age_price">
             <p>
-                Ages {{$event->age_restriction}}
+                Ages: {{$event->age_restriction}}
+                @if($event->age_restriction != '')
+                    <br>
+                    <small>{{$event->age_restriction_disclaimer}}</small>
+                @endif
             </p>
         </div>
     @endif

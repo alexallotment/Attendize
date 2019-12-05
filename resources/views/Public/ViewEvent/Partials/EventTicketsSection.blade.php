@@ -1,4 +1,8 @@
 <section id="tickets">
+    <pre>
+        {{$tickets}}
+    {{$event}}
+    </pre>
 
     @if($event->end_date->isPast())
         <div class="content">
@@ -126,7 +130,7 @@
                                     <td colspan="3" class="event-ticket-section-terms">
                                         <!-- @lang("Public_ViewEvent.below_tickets") -->
                                         <span><strong>Terms & Conditions</strong></span><br/>
-                                        <span>Any Ticket holder who is 18 and over that is unable to present valid identification indicating that they are at least 18 years of age will not be admitted to the event, and will not be eligible for a refund. Read the full <a href="/terms-and-conditions">Terms & Conditions.</a></span>
+                                        <span>Ticket holders must present valid identification at the time of entry entering the event venue to prove they are the ticket owner and meet the minimum age requirements of {{$event->age_restriction}} {{$event->age_restriction_disclaimer}}. Refunds will not be given unless the event is cancelled or postponed. Read the full <a href="/terms-and-conditions">Terms & Conditions.</a></span>
                                     </td>
                                 </tr>
                                 <tr class="checkout">
