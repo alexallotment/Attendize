@@ -22,9 +22,9 @@ return [
     'outgoing_email_name'    => env('MAIL_FROM_NAME'),
     'incoming_email'         => env('MAIL_FROM_ADDRESS'),
 
-    'app_name'               => 'Attendize Event Ticketing',
+    'app_name'               => 'AP Tickets',
     'event_default_bg_color' => '#B23333',
-    'event_default_bg_image' => 'assets/images/public/EventPage/backgrounds/5.jpg',
+    'event_default_bg_image' => 'assets/images/public/EventPage/backgrounds/default-event-image.jpg.jpg',
 
     'event_images_path'      => 'user_content/event_images',
     'event_ticket_bg_image_path'      => 'user_content/ticket_background_image',
@@ -35,13 +35,13 @@ return [
     'fallback_organiser_logo_url' => '/assets/images/logo-dark.png',
     'cdn_url'                     => '',
 
-    'checkout_timeout_after' => env('CHECKOUT_TIMEOUT_AFTER', 30), #minutes
+    'checkout_timeout_after' => env('CHECKOUT_TIMEOUT_AFTER', 10), #minutes
 
     'ticket_status_before_sale_date' => 3,
     'ticket_status_on_sale'          => 4,
     'ticket_status_off_sale'         => 5,
 
-    'ticket_booking_fee_fixed'      => 0,
+    'ticket_booking_fee_fixed'      => 1.5,
     'ticket_booking_fee_percentage' => 0,
 
     /* Order statuses */
@@ -61,7 +61,7 @@ return [
 
 
     'default_timezone'           => 30, #Europe/Dublin
-    'default_currency'           => 2, #Euro
+    'default_currency'           => 3, #Euro
     'default_date_picker_format' => env('DEFAULT_DATEPICKER_FORMAT', 'yyyy-MM-dd HH:mm'),
     'default_date_picker_seperator' => env('DEFAULT_DATEPICKER_SEPERATOR', '-'),
     'default_datetime_format'    => env('DEFAULT_DATETIME_FORMAT', 'Y-m-d H:i'),

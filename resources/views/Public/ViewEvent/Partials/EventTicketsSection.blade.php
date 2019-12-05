@@ -18,8 +18,6 @@
                                 </tr>
 
 
-
-
                                 <?php
                                 $is_free_event = true;
                                 ?>
@@ -119,21 +117,16 @@
                                 </tr>
                                 @endif
                                 <tr>
-                                    <td colspan="3">
-                                        <span><strong>Delivery Method</strong></span><br/>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td colspan="3" class="event-tickets-section-etickets">
-                                        <span><strong>eTickets</strong></span><br/>
-                                        <span class="free">Free</span>. Print your tickets.
+                                        <span><strong>Delivery Method </strong></span><br/>
+                                        <span class="free">E-Tickets</span>. Instant download to print your tickets.
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="event-ticket-section-terms">
                                         <!-- @lang("Public_ViewEvent.below_tickets") -->
                                         <span><strong>Terms & Conditions</strong></span><br/>
-                                        <span>Any Ticket holder who is 18 and over that is unable to present valid identification indicating that they are at least 18 years of age will not be admitted to the event, and will not be eligible for a refund.</span>
+                                        <span>Any Ticket holder who is 18 and over that is unable to present valid identification indicating that they are at least 18 years of age will not be admitted to the event, and will not be eligible for a refund. Read the full <a href="/terms-and-conditions">Terms & Conditions.</a></span>
                                     </td>
                                 </tr>
                                 <tr class="checkout">
