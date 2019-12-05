@@ -86,23 +86,6 @@
         </span>
     </div>
 
-    <div style="display: none;" class="event_age_price">
-        <p>
-            <?php
-            $ticket = DB::table('tickets')->where('event_id', $event->id)->first();
-            $currency_symbol = DB::table('currencies')->where('id', $event->currency_id)->first();
-            ?>
-            @if($ticket->price == 0.00)
-                FREE
-            @else 
-                @if($currency_symbol->symbol_left != '')
-                    {{$currency_symbol->symbol_left}}{{$ticket->price}}
-                @else
-                    {{$ticket->price}}{{$currency_symbol->symbol_right}}
-                @endif
-            @endif
-        </p>
-    </div>
 
     @if($event->age_restriction != '')
         <div class="event_age_price">
