@@ -12,6 +12,7 @@ use Cookie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mail;
+use Redirect;
 use Validator;
 
 class EventViewController extends Controller
@@ -91,6 +92,10 @@ class EventViewController extends Controller
 
                 Cookie::queue('affiliate_' . $event_id, $affiliate_ref, 60 * 24 * 60);
             }
+        }
+
+        if($event->determineTicketsAvailableForEvent() === true){
+            return Redirect::away($event->sold_out_link_redirect);
         }
 
         return view('Public.ViewEvent.EventPage', $data);

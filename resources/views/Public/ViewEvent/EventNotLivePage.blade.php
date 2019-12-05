@@ -117,7 +117,7 @@
                     @if($event->age_restriction != '')
                         <div class="event_age_price">
                             <p>
-                                <br/>Ages {{$event->age_restriction}}
+                                <br/>Ages {{$event->age_restriction}} {{$event->age_restriction_disclaimer}}
                             </p>
                         </div>
                     @endif

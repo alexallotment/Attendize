@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Str;
 use URL;
-use Redirect;
 
 class Event extends MyBaseModel
 {
@@ -460,8 +459,8 @@ ICSTemplate;
     public function determineTicketsAvailableForEvent()
     {
         //If no redirect URL has been set then just let execution happen has normal
-        if(!empty($this->sold_out_link_redirect)) {
-            return '';
+        if(empty($this->sold_out_link_redirect)) {
+            return false;
         }
 
         //Calculate if the tickets for the event are sold out or not and redirect if needed
@@ -478,10 +477,11 @@ ICSTemplate;
 
         $final_availability = $event_tickets_available - $tickets_unavailable_count;
 
+
         if($final_availability < 1) {
-            return Redirect::away($this->sold_out_link_redirect);
+            return true;
         } else {
-            return '';
+            return false;
         }
     }
 }
