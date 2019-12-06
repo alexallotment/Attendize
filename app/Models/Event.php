@@ -467,7 +467,6 @@ ICSTemplate;
         $event_tickets_available = Ticket::where('event_id', $this->id)
             ->sum('quantity_available');
 
-        // NEED TO CHECK DATE / TIME OF EXPIRY
         $quantity_reserved = ReservedTickets::where('event_id', $this->id)
             ->where('expires', '>', Carbon::now())
             ->sum('quantity_reserved');
@@ -479,6 +478,13 @@ ICSTemplate;
 
         $final_availability = $event_tickets_available - $tickets_unavailable_count;
 
+        // GET CURRENT USER RESERVED TOTALS
+        $user_reserved = ReservedTickets::where('event_id', $this->id)
+            ->where('expires', '>', Carbon::now())
+            ->where('session_id', session()->getId())
+            ->sum('quantity_reserved');
+
+        $final_availability = $final_availability + $user_reserved;
 
         if($final_availability < 1) {
             return true;
