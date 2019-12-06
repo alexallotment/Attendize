@@ -100,7 +100,7 @@
               // seconds--;
               if (seconds == 0) {
                 clearInterval(countdownTimer);
-                document.getElementById('countdown').innerHTML = '<a class="btn btn-block btn-success" href="javascript:window.location.reload(true)">Reload Page</a>';
+                document.getElementById('refresh-link').innerHTML = '<a class="btn btn-block btn-success" href="javascript:window.location.reload(true)">Reload Page</a>';
               } else {
                 seconds--;
               }
@@ -110,6 +110,7 @@
 
                     <p class="countdown-timer-heading">Tickets go on sale in</p>
                     <div id="countdown-timer"><div class="dt-block"><span class="dt-value">00</span><span class="dt-label">DAYS</span></div><div class="dt-block"><span class="dt-value">00</span><span class="dt-label">HOURS</span></div><div class="dt-block"><span class="dt-value">00</span><span class="dt-label">MINS</span></div><div class="dt-block"><span class="dt-value">00</span><span class="dt-label">SECS</span></div></div>
+                    <div id="refresh-link"></div>
 
                     <?php //var_dump($countdown);?>
 
