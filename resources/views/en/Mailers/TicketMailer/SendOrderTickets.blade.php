@@ -19,7 +19,7 @@ at: {{route('showOrderDetails', ['order_reference' => $order->order_reference])}
 <h3>Event Details</h3>
 <div class="allotment-left-organiser-name desktop">
     {{$order->event->organiser->name}}
-    <span class="event-line-up">{{$event->line_up}}</span>
+    <span class="event-line-up">{{$order->event->line_up}}</span>
 </div>
 
 <div class="event_date">
@@ -70,7 +70,7 @@ at: {{route('showOrderDetails', ['order_reference' => $order->order_reference])}
                     <span>{{$order->event->location_post_code}}</span><br/>
                 @endif
              @else
-                <span>{{ $order->event->$event->location_address }}</span>
+                <span>{{ $order->event->location_address }}</span>
              @endif
             
     </span>

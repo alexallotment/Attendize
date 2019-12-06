@@ -79,7 +79,7 @@
                         <span>{{$event->location_post_code}}</span><br/>
                     @endif
                  @else
-                    <span>{{ $event->$event->location_address }}</span>
+                    <span>{{ $event->location_address }}</span>
                  @endif
                 
             <meta property="address" content="{{ urldecode($event->venue_name) }}">
