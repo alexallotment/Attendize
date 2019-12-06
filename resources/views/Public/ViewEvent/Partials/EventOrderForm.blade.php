@@ -6,8 +6,11 @@
         $total_fees = 0;
         @endphp
         @foreach($tickets as $ticket)
+
         @php
         $total_fees = $total_fees + $ticket['booking_fee'];
+        $total_fees = $total_fees + $ticket['organiser_booking_fee'];
+        
         @endphp
         <tr>
             <td class="pl0"><strong>{{{$ticket['ticket']['title']}}}</strong></td>

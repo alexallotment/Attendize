@@ -314,11 +314,13 @@
                                 <span>
                                     Age {{$event->age_restriction}}
                                 </span>
+                                @if($event->age_restriction_disclaimer)
+                                <br/><span class="age_disclaimer">{{$event->age_restriction_disclaimer}}</span>
+                                @endif
+                                
                             </h2>
                         </div>
-                        <div class="layout_even">
-                        <span class="age_disclaimer">{{$event->age_restriction_disclaimer}}</span>
-                        </div>
+                
     
                         <div class="allotment-right-text">
                             tickets.allotment.pro
