@@ -17,17 +17,13 @@ at: {{route('showOrderDetails', ['order_reference' => $order->order_reference])}
 
 <!-- NEW EMAIL STUFF -->
 <h3>Event Details</h3>
-<div class="allotment-left-organiser-name desktop">
-    {{$order->event->organiser->name}}
-    <span class="event-line-up">{{$order->event->line_up}}</span>
-</div>
+<p>
+<strong>{{$order->event->organiser->name}}<strong><br/>
+{{$order->event->line_up}}
+</p>
 
-<div class="event_date">
-    <p >
-        <strong>{{ $order->event->start_date->format('D F j Y') }}</strong>
-    </p>
-    
-    <p >
+    <p>
+        {{ $order->event->start_date->format('D F j Y') }}<br/>
          @if($order->event->start_date->diffInDays($order->event->end_date) == 0)
             {{ $order->event->start_date->format('H:i a') }}
             - 
@@ -36,11 +32,8 @@ at: {{route('showOrderDetails', ['order_reference' => $order->order_reference])}
             {{ $order->event->end_date->format('D jS F Y') }}
          @endif
     </p>
-</div>
-<div class="event_venue">
-    <span property="location" typeof="Place">
-        <b property="name">{{$order->event->venue_name}}</b><br/>
-        
+
+ <p>       
             @if($order->event->location_is_manual)
                 @if($order->event->location_street_number != '')
                     <span>{{$order->event->location_street_number}}</span><br/>
@@ -73,12 +66,10 @@ at: {{route('showOrderDetails', ['order_reference' => $order->order_reference])}
                 <span>{{ $order->event->location_address }}</span>
              @endif
             
-    </span>
-</div>
+</p>
 
 
 @if($order->event->age_restriction != '')
-    <div class="event_age_price">
         <p>
             Ages: {{$order->event->age_restriction}}
             @if($order->event->age_restriction != '')
@@ -86,17 +77,18 @@ at: {{route('showOrderDetails', ['order_reference' => $order->order_reference])}
                 <small>{{$order->event->age_restriction_disclaimer}}</small>
             @endif
         </p>
-    </div>
 @endif
 <!-- NEW EMAIL STUFF -->
 
 
 <h3>Order Details</h3>
+<p>
 Order Reference: <strong style="text-transform:uppercase;">{{$order->order_reference}}</strong><br>
 Order Name: <strong>{{$order->full_name}}</strong><br>
 Order Date: <strong>{{$order->created_at->format(config('attendize.default_datetime_format'))}}</strong><br>
 Order Email: <strong>{{$order->email}}</strong><br>
 <a href="{!! route('downloadCalendarIcs', ['event_id' => $order->event->id]) !!}">Add To Calendar</a>
+</p>
 
 @if ($order->is_business)
 <h3>Business Details</h3>
