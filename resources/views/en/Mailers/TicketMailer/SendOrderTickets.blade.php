@@ -18,73 +18,72 @@ at: {{route('showOrderDetails', ['order_reference' => $order->order_reference])}
 <!-- NEW EMAIL STUFF -->
 <h3>Event Details</h3>
 <div class="allotment-left-organiser-name desktop">
-    {{$event->organiser->name}}
+    {{$order->event->organiser->name}}
     <span class="event-line-up">{{$event->line_up}}</span>
 </div>
 
 <div class="event_date">
-    <p property="startDate" content="{{ $event->start_date->toIso8601String() }}">
-        <strong>{{ $event->start_date->format('D F j Y') }}</strong>
+    <p >
+        <strong>{{ $order->event->start_date->format('D F j Y') }}</strong>
     </p>
     
-    <p property="endDate" content="{{ $event->end_date->toIso8601String() }}">
-         @if($event->start_date->diffInDays($event->end_date) == 0)
-            {{ $event->start_date->format('H:i a') }}
+    <p >
+         @if($order->event->start_date->diffInDays($order->event->end_date) == 0)
+            {{ $order->event->start_date->format('H:i a') }}
             - 
-            {{ $event->end_date->format('H:i a') }}
+            {{ $order->event->end_date->format('H:i a') }}
          @else
-            {{ $event->end_date->format('D jS F Y') }}
+            {{ $order->event->end_date->format('D jS F Y') }}
          @endif
     </p>
 </div>
 <div class="event_venue">
     <span property="location" typeof="Place">
-        <b property="name">{{$event->venue_name}}</b><br/>
+        <b property="name">{{$order->event->venue_name}}</b><br/>
         
-            @if($event->location_is_manual)
-                @if($event->location_street_number != '')
-                    <span>{{$event->location_street_number}}</span><br/>
+            @if($order->event->location_is_manual)
+                @if($order->event->location_street_number != '')
+                    <span>{{$order->event->location_street_number}}</span><br/>
                 @endif
 
-                @if($event->location_address_line_1 != '')
-                    <span>{{$event->location_address_line_1}}</span><br/>
+                @if($order->event->location_address_line_1 != '')
+                    <span>{{$order->event->location_address_line_1}}</span><br/>
                 @endif
 
-                @if($event->location_address_line_2 != '')
-                    <span>{{$event->location_address_line_2}}</span><br/>
+                @if($order->event->location_address_line_2 != '')
+                    <span>{{$order->event->location_address_line_2}}</span><br/>
                 @endif
 
-                @if($event->location_country != '')
-                    <span>{{$event->location_country}}</span><br/>
+                @if($order->event->location_country != '')
+                    <span>{{$order->event->location_country}}</span><br/>
                 @endif
 
-                @if($event->location_country_code != '')
-                    <span>{{$event->location_country_code}}</span><br/>
+                @if($order->event->location_country_code != '')
+                    <span>{{$order->event->location_country_code}}</span><br/>
                 @endif
 
-                @if($event->location_state != '')
-                    <span>{{$event->location_state}}</span><br/>
+                @if($order->event->location_state != '')
+                    <span>{{$order->event->location_state}}</span><br/>
                 @endif
 
-                @if($event->location_post_code != '')
-                    <span>{{$event->location_post_code}}</span><br/>
+                @if($order->event->location_post_code != '')
+                    <span>{{$order->event->location_post_code}}</span><br/>
                 @endif
              @else
-                <span>{{ $event->$event->location_address }}</span>
+                <span>{{ $order->event->$event->location_address }}</span>
              @endif
             
-        <meta property="address" content="{{ urldecode($event->venue_name) }}">
     </span>
 </div>
 
 
-@if($event->age_restriction != '')
+@if($order->event->age_restriction != '')
     <div class="event_age_price">
         <p>
-            Ages: {{$event->age_restriction}}
-            @if($event->age_restriction != '')
+            Ages: {{$order->event->age_restriction}}
+            @if($order->event->age_restriction != '')
                 <br>
-                <small>{{$event->age_restriction_disclaimer}}</small>
+                <small>{{$order->event->age_restriction_disclaimer}}</small>
             @endif
         </p>
     </div>
