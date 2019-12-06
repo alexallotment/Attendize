@@ -467,7 +467,9 @@ ICSTemplate;
         $event_tickets_available = Ticket::where('event_id', $this->id)
             ->sum('quantity_available');
 
+        // NEED TO CHECK DATE / TIME OF EXPIRY
         $quantity_reserved = ReservedTickets::where('event_id', $this->id)
+            ->where('expires', '>', Carbon::now())
             ->sum('quantity_reserved');
 
         $quantity_sold = Ticket::where('event_id', $this->id)
