@@ -100,7 +100,7 @@
               // seconds--;
               if (seconds == 0) {
                 clearInterval(countdownTimer);
-                document.getElementById('refresh-link').innerHTML = '<br/><a class="btn btn-primary" href="javascript:window.location.reload(true)">Reload Page</a>';
+                document.getElementById('refresh-link').innerHTML = '<br/><a style="color:#e16c26 !important;" class="btn btn-primary" href="javascript:window.location.reload(true)">Reload Page</a>';
               } else {
                 seconds--;
               }
