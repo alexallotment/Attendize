@@ -97,13 +97,13 @@
               '<span class="dt-value">' + pad(remainingSeconds) + '</span><span class="dt-label">SECS</span>'
               '</div>';
 
-              seconds--;
-              // if (seconds == 0) {
-              //   clearInterval(countdownTimer);
-              //   document.getElementById('countdown').innerHTML = "";
-              // } else {
-              //   seconds--;
-              // }
+              // seconds--;
+              if (seconds == 0) {
+                clearInterval(countdownTimer);
+                document.getElementById('countdown').innerHTML = '<a class="btn btn-block btn-success" href="javascript:window.location.reload(true)">Reload Page</a>';
+              } else {
+                seconds--;
+              }
             }
             var countdownTimer = setInterval('timer()', 1000);
         </script>
