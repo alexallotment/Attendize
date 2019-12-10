@@ -1,0 +1,9 @@
+.tickets-terms-and-conditions ol,
+.tickets-terms-and-conditions ul {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.tickets-terms-and-conditions li {
+    margin-bottom: 5px;
+}

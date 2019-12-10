@@ -13,6 +13,8 @@
 
         <!--Style-->
        {!!HTML::style('assets/stylesheet/application.css')!!}
+       {!!HTML::style('assets/stylesheet/terms.css')!!}
+
         <!--/Style-->
 
         @yield('head')

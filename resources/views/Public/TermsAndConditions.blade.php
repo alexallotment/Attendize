@@ -9,7 +9,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel">
 
-                <div class="panel-body">
+                <div class="panel-body tickets-terms-and-conditions">
 
                     <h1 class="text-center">TERMS & CONDITIONS</h1>
 
@@ -25,7 +25,7 @@
 
                     <ol>
                         <li>
-                            Information about us
+                            <h4>Information about us</h4>
                             <ol>
                                 <li>
                                         tickets.allotment.pro is a site operated by Allotment Productions LTD trading as www.allotment.pro. We are registered in England and Wales under company number 10489974 and with our registered office at Allotment Productions, Unit 4A, Paddock Road, RG4 5BY, Reading, UK.
@@ -33,7 +33,7 @@
                             </ol>
                         </li>
                         <li>
-                            Your status<br/>
+                            <h4>Your status</h4>
                             By placing an order through our site, you warrant that:
                             <ol type="a">
                                 <li>
@@ -45,7 +45,7 @@
                             </ol>
                         </li>
                         <li>
-                            Your obligations
+                            <h4>Your obligations</h4>
                             <ol>
                                 <li>
                                     You represent and warrant that the Tickets are purchased for personal use only, and that they have not been 
