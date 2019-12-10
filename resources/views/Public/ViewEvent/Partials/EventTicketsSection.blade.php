@@ -130,6 +130,10 @@
                                         <span class="free">E-Tickets</span>. Instant download to print your tickets.
                                     </td>
                                 </tr>
+
+                                @include('../../EventProducts/EventTicketsProductSection', ['product_ids' => [55, 56, 48]])
+                                <!-- 48 -->
+
                                 <tr>
                                     <td colspan="3" class="event-ticket-section-terms">
                                         <!-- @lang("Public_ViewEvent.below_tickets") -->
