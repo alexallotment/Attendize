@@ -129,7 +129,11 @@ class EventCheckoutController extends Controller
         $errors = [];
 
         foreach($products as $prod) {
-            $stock_check = WooCommerceController::check_product_stock($prod, 'simple');
+            if($product_type == 'simple') {
+                $stock_check = WooCommerceController::check_product_stock($prod, 'simple');
+            } else {
+                $stock_check = WooCommerceController::check_product_stock($prod, 'variable');
+            }
 
             if($stock_check != '') {
                 $errors[] = $stock_check;
@@ -170,23 +174,33 @@ class EventCheckoutController extends Controller
         // Log::info('----------------');
 
         //Check that the products are in stock onb the WooCommerce end before proceeding
-        $product_errors = $this->check_simple_variable_product_stock($simple_product_data, 'simple');
+        $simple_product_errors = $this->check_simple_variable_product_stock($simple_product_data, 'simple');
+        $variable_product_errors = $this->check_simple_variable_product_stock($variable_product_data, 'variable');
 
-        if(!empty($product_errors)) {
-            $error_message = '';
+        //Log::info(print_r($variable_product_data, true));
 
-            foreach($product_errors as $error) {
-                $error_message = $error;
+
+
+        $error_message = '';
+
+        if(!empty($simple_product_errors)) {
+            foreach($simple_product_errors as $error) {
+                $error_message .= $error;
             }
+        }
 
-            //Log::info(print_r($error_message, true));
+        if(!empty($variable_product_errors)) {
+            foreach($variable_product_errors as $error) {
+                $error_message .= $error;
+            }
+        }
 
+        if($error_message != '') {
             return response()->json([
                 'status'  => 'error',
                 'message' => $error_message,
             ]);
         }
-
 
 
 

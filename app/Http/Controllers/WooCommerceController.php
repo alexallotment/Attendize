@@ -49,12 +49,27 @@ class WooCommerceController extends Controller
                 echo $e;
                 return false;
             }
+        } elseif($product_type == 'variable') {
+            try {
+                $product = $woocommerce->get('products/' . $prod['product_id'] . '/variations/' . $prod['variation_id']);
+            } catch(HttpClientException $e) {
+                echo $e;
+                return false;
+            }
+        }
 
-            if($product->manage_stock == 1) {
-                $calculated_reserved_stock = $product->stock_quantity - $prod['value'];
+        if($product->manage_stock == 1) {
+            $calculated_reserved_stock = $product->stock_quantity - $prod['value'];
 
-                if($calculated_reserved_stock < 1) {
+            if($calculated_reserved_stock < 0) {
+                if($product_type == 'simple') {
                     return 'The product "' . $product->name . '" does not have enough stock.<br/>';
+                } elseif($product_type == 'variable') {
+                    if(!isset($product->attributes[0])) {
+                        return 'There is not enough stock.<br/>';
+                    } else {
+                        return 'There is not enough stock for ' . $product->attributes[0]->name . ' ' . $product->attributes[0]->option . '.<br/>';
+                    }
                 }
             }
         }
