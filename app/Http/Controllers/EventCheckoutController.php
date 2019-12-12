@@ -48,6 +48,97 @@ class EventCheckoutController extends Controller
         $this->is_embedded = $request->get('is_embedded') == '1';
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Determines which products submitted are simple ones.
+     * 
+     * Indexes for Simple and Variable products:
+     * 
+     * 0: Product ID
+     * 1: Variation ID
+     * 2: Bundle ID
+     * 3: Value (quantity)
+     */
+    private function get_simple_variable_products_for_checkout(&$products, $product_type) {
+        $processed_keys = [];
+        $type_products = [];
+
+        foreach($products as $key => $prod) {
+            $exploded = explode("_", $prod);
+
+            //If variable or simple product the count should be 4
+            if(count($exploded) == 4) {
+                if($product_type == 'simple') {
+                    if($exploded[1] == 0 && $exploded[2] == 0) {
+                        $processed_keys[] = $key;
+    
+                        if($exploded[3] != 0) {
+                            $entry = [
+                                'product_id' => $exploded[0],
+                                'value' => $exploded[3]
+                            ];
+                            $type_products[] = $entry;
+                        }
+                    }
+                } else {
+                    if($exploded[1] != 0 && $exploded[2] == 0) {
+                        $processed_keys[] = $key;
+    
+                        if($exploded[3] != 0) {
+                            $entry = [
+                                'product_id' => $exploded[0],
+                                'variation_id' => $exploded[1],
+                                'value' => $exploded[3]
+                            ];
+
+                            $type_products[] = $entry;
+                        }
+                    }                    
+                }
+            }
+        }
+
+        // Log::info($product_type . ' PRODUCTS PROCESSED:');
+        // Log::info(print_r($type_products, true));
+        // Log::info('----------------');
+
+        //As simple products are processed now we will remove them from the original request
+        //to save time.
+        foreach($processed_keys as $key) {
+            unset($products[$key]);
+        }
+
+        $products = array_values($products);
+
+        return $type_products;
+    }
+
+    public function check_simple_variable_product_stock($products, $product_type) {
+        $errors = [];
+
+        foreach($products as $prod) {
+            $stock_check = WooCommerceController::check_product_stock($prod, 'simple');
+
+            if($stock_check != '') {
+                $errors[] = $stock_check;
+            }
+        }
+
+        return $errors;
+    }   
+
     /**
      * Validate a ticket request. If successful reserve the tickets and redirect to checkout
      *
@@ -57,6 +148,67 @@ class EventCheckoutController extends Controller
      */
     public function postValidateTickets(Request $request, $event_id)
     {
+        /**
+         * Process WooCommerce orders
+         */
+        $product_data = $request->get('ap_ticketing_products');
+
+        // Log::info('ORIGINAL PRODUCT DATA:');
+        // Log::info(print_r($product_data, true));
+        // Log::info('----------------');
+
+        $simple_product_data = $this->get_simple_variable_products_for_checkout($product_data, 'simple');
+        
+        // Log::info('ORIGINAL PRODUCT DATA AFTER PROCESSING SIMPLE PRODUCTS:');
+        // Log::info(print_r($product_data, true));
+        // Log::info('----------------');
+
+        $variable_product_data = $this->get_simple_variable_products_for_checkout($product_data, 'variable');
+
+        // Log::info('ORIGINAL PRODUCT DATA AFTER PROCESSING VARIABLE PRODUCTS:');
+        // Log::info(print_r($product_data, true));
+        // Log::info('----------------');
+
+        //Check that the products are in stock onb the WooCommerce end before proceeding
+        $product_errors = $this->check_simple_variable_product_stock($simple_product_data, 'simple');
+
+        if(!empty($product_errors)) {
+            $error_message = '';
+
+            foreach($product_errors as $error) {
+                $error_message = $error;
+            }
+
+            //Log::info(print_r($error_message, true));
+
+            return response()->json([
+                'status'  => 'error',
+                'message' => $error_message,
+            ]);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /*
          * Order expires after X min
          */
@@ -214,6 +366,13 @@ class EventCheckoutController extends Controller
             'account_payment_gateway' => $activeAccountPaymentGateway,
             'payment_gateway'         => $paymentGateway
         ]);
+
+
+
+
+
+
+
 
         /*
          * If we're this far assume everything is OK and redirect them

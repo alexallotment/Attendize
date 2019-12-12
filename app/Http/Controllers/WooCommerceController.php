@@ -11,8 +11,7 @@ use Log;
 
 class WooCommerceController extends Controller
 {
-    public static function getShopProducts($product_ids) {
-
+    private static function get_woocommerce_client() {
         $config = [
             'store_url' => 'https://stores.allotment.pro/fulfilmentshoppy/',
             'consumer_key' => 'ck_d1a394997fdec3f4e84c963b7aac5a09bc423232',
@@ -36,6 +35,36 @@ class WooCommerceController extends Controller
                 'timeout' => $config['timeout'],
             ]
         );
+
+        return $woocommerce;
+    }
+
+    public static function check_product_stock($prod, $product_type) {
+        $woocommerce = self::get_woocommerce_client();
+
+        if($product_type == 'simple') {
+            try {
+                $product = $woocommerce->get('products/' . $prod['product_id']);
+            } catch(HttpClientException $e) {
+                echo $e;
+                return false;
+            }
+
+            if($product->manage_stock == 1) {
+                $calculated_reserved_stock = $product->stock_quantity - $prod['value'];
+
+                if($calculated_reserved_stock < 1) {
+                    return 'The product "' . $product->name . '" does not have enough stock.<br/>';
+                }
+            }
+        }
+
+        return '';
+    }
+
+    public static function getShopProducts($product_ids) {
+
+        $woocommerce = self::get_woocommerce_client();
 
         try {
             $products = $woocommerce->get('products');
@@ -96,6 +125,11 @@ class WooCommerceController extends Controller
                         $bundle_entry['image'] = $product->images[0]->src;
                     }
 
+                    if($bundle_entry['type'] == 'simple') {
+                        $bundle_entry['price'] = '£' . $product->price;
+                        $bundle_entry = self::determine_product_stock($bundle_entry, $product);
+                    }
+
                     if($bundle_entry['type'] == 'variable') {
                         $bundle_var_product = self::map_variable_product_data($product, $woocommerce, true);
                         $bundle_entry = $bundle_var_product;
@@ -118,6 +152,7 @@ class WooCommerceController extends Controller
             'id' => $product->id,
             'type' => 'variable',
             'name' => $product->name,
+            'price_range' => '',
             'image' => '',
             'variations' => []
         ];
@@ -127,6 +162,8 @@ class WooCommerceController extends Controller
         }
 
         $variation_products = [];
+        $min_val = false;
+        $max_val = false;
 
         foreach($product->variations as $var_id) {
             $prod = [
@@ -139,8 +176,22 @@ class WooCommerceController extends Controller
 
             $variation_data = $woocommerce->get('products/' . $product->id . '/variations/' . $var_id);
 
+            if($min_val == false && $max_val == false) {
+                $min_val = $variation_data->price;
+                $max_val = $variation_data->price;
+            } elseif($min_val != false && $max_val == false) {
+                $max_val = $variation_data->price;
+            } elseif($min_val != false && $max_val != false) {
+                if($variation_data->price < $min_val) {
+                    $min_val = $variation_data->price;
+                } elseif($variation_data->price > $max_val) {
+                    $max_val = $variation_data->price;
+                }
+            }
+            
+
             if(isset($variation_data->attributes[0])) {
-                $prod['name'] = $product->name . ' - ' . $variation_data->attributes[0]->option;
+                $prod['name'] = $variation_data->attributes[0]->option;
             }
 
             $prod = self::determine_product_stock($prod, $variation_data);
@@ -152,6 +203,15 @@ class WooCommerceController extends Controller
             }
 
             $variation_products[] = $prod;
+        }
+
+        //Log::info(print_r($min_val, true));
+        //Log::info(print_r($max_val, true));
+
+        if($min_val == $max_val) {
+            $entry['price_range'] = '£' . $min_val;
+        } else {
+            $entry['price_range'] = '£' . $min_val . ' - £' . $max_val;
         }
 
         $entry['variations'] = $variation_products;

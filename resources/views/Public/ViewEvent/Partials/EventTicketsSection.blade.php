@@ -131,7 +131,7 @@
                                     </td>
                                 </tr>
 
-                                @include('../../EventProducts/EventTicketsProductSection', ['product_ids' => [55, 56, 48]])
+                                @include('../../EventProducts/EventTicketsProductSection', ['product_ids' => [54, 56, 48]])
                                 <!-- 48 -->
 
                                 <tr>
