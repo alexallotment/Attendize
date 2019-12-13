@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 
+use App\Models\ReservedProducts;
+
+use Input;
 use Log;
 
 class WooCommerceController extends Controller
@@ -37,6 +40,177 @@ class WooCommerceController extends Controller
         );
 
         return $woocommerce;
+    }
+
+    public static function reserve_product_stock($product_data, $order_expires_time, $event_id) {
+        $simple_products = $product_data[0];
+        $variable_products = $product_data[1];
+
+        //Process products
+        $simple_products_data = self::processWoocommerceProducts($simple_products, 'simple');
+        $variable_products_data = self::processWoocommerceProducts($variable_products, 'variable');
+
+        // Log::info(print_r("''''''''''''''", true));
+        // Log::info(print_r($variable_products_data, true));
+        // Log::info(print_r("'''''''''''''''", true));
+
+        // $simple_products = self::map_products_data($simple_products_data, $simple_products, 'simple');
+        // $variable_products = self::map_products_data($variable_products_data, $variable_products, 'variable');
+
+        // Log::info(print_r('---====----', true));
+        // Log::info(print_r($variable_products, true));
+        // Log::info(print_r('---====----', true));
+
+        //If at this point everything should be good with WooCommerce so we update the Ticketing side
+        foreach($simple_products as $simple_prod) {
+            self::processTicketingProducts($simple_prod, $event_id, $order_expires_time);
+        }
+
+        foreach($variable_products as $simple_prod) {
+            self::processTicketingProducts($simple_prod, $event_id, $order_expires_time);
+        }
+    }
+
+    public static function map_products_data($products_data, $main_data, $type) {
+        $return = [];
+
+        foreach($main_data as $pkey => $data) {
+            foreach($products_data as $key => $prod) {
+                if($type == 'simple') {
+                    if($data['product_id'] == $prod['product_id']) {
+                        $entry = $data;
+                        $entry['name'] = $prod['product_name'];
+                        $entry['price'] = $prod['product_price'];
+
+                        $return[] = $entry;
+
+                        break;
+                    }
+                } elseif($type == 'variable') {
+                    if($data['variation_id'] == $prod['product_variation_id']) {
+                        $entry = $prod;
+
+                        $return[] = $entry;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Log::info(print_r('.........', true));
+        // Log::info(print_r($return, true));
+        // Log::info(print_r('.......', true));
+
+        return $return;
+    }
+
+    private static function processTicketingProducts($product, $event_id, $order_expires_time, $is_variation = false) {
+        $reservedProducts = new reservedProducts();
+        $reservedProducts->product_id = $product['product_id'];
+
+        if($is_variation) {
+            $reservedProducts->variation_id = $product['variation_id'];
+        }
+
+        $reservedProducts->event_id = $event_id;
+        $reservedProducts->quantity_reserved = $product['value'];
+        $reservedProducts->expires = $order_expires_time;
+        $reservedProducts->session_id = session()->getId();
+        $reservedProducts->save();
+    }
+
+    private static function processWoocommerceProducts($products_list, $products_type) {
+        $woocommerce = self::get_woocommerce_client();
+        $product_details = [];
+
+        foreach($products_list as $single_prod) {
+            try {
+                if($products_type == 'simple') {
+                    $product = $woocommerce->get('products/' . $single_prod['product_id']);
+
+                    $entry = [
+                        'product_id' => $single_prod['product_id'],
+                        'product_name' => $product->name,
+                        'product_price' => $product->price
+                    ];
+                } else {
+                    $parent_product = $woocommerce->get('products/' . $single_prod['product_id']);
+                    $product = $woocommerce->get('products/' . $single_prod['product_id'] . '/variations/' . $single_prod['variation_id']);
+                    
+                    $product_name = $parent_product->name;
+
+                    (isset($parent_product->attributes[0]) ? $product_name .= ' (' . $product->attributes[0]->option . ')' : '');
+
+                    $entry = [
+                        'product_id' => $single_prod['product_id'],
+                        'product_name' => $product_name,
+                        'product_price' => $product->price,
+                        'value' => $single_prod['value']
+                    ];
+                }
+
+                if($products_type == 'simple') {
+                    $entry['product_variation_id'] = 0;
+                } else {
+                    $entry['product_variation_id'] = $single_prod['variation_id'];
+                }
+
+                $product_details[] = $entry;
+            } catch(HttpClientException $e) {
+                echo $e;
+                return false;
+            }
+
+            //Add old back stock in if it has already been saved on Ticketing side
+            $current_reserved_products = reservedProducts::where('session_id', '=', session()->getId())->first();
+
+            if($current_reserved_products) {
+                $reserved_stock = $current_reserved_products->quantity_reserved;
+                $old_stock_qty = $product->stock_quantity;
+    
+                $data = [
+                    'manage_stock' => true,
+                    'stock_quantity' => $old_stock_qty + $reserved_stock
+                ];
+
+                $new_total = $old_stock_qty + $reserved_stock;
+
+                if($products_type == 'simple') {
+                    $result = $woocommerce->put('products/' . $single_prod['product_id'], $data);
+                } else {
+                    $result = $woocommerce->put('products/' . $single_prod['product_id'] . '/variations/' . $single_prod['variation_id'], $data);
+                }
+
+                if(!$result) {
+                    return false;
+                }
+
+                $current_reserved_products->delete();
+            }
+
+            // Remove the stock now
+            if(isset($new_total)) {
+                $data = [
+                    'manage_stock' => true,
+                    'stock_quantity' => $new_total - $single_prod['value']
+                ];
+            } else {
+                $data = [
+                    'manage_stock' => true,
+                    'stock_quantity' => $product->stock_quantity - $single_prod['value']
+                ];
+            }
+
+            if($products_type == 'simple') {
+                $result = $woocommerce->put('products/' . $single_prod['product_id'], $data);
+            } else {
+                //$parent = $woocommerce->get('products/' . $single_prod['product_id'], $data);
+                $result = $woocommerce->put('products/' . $single_prod['product_id'] . '/variations/' . $single_prod['variation_id'], $data);
+            }
+        }
+
+        return $product_details;
     }
 
     public static function check_product_stock($prod, $product_type) {
@@ -204,7 +378,6 @@ class WooCommerceController extends Controller
                 }
             }
             
-
             if(isset($variation_data->attributes[0])) {
                 $prod['name'] = $variation_data->attributes[0]->option;
             }
@@ -219,9 +392,6 @@ class WooCommerceController extends Controller
 
             $variation_products[] = $prod;
         }
-
-        //Log::info(print_r($min_val, true));
-        //Log::info(print_r($max_val, true));
 
         if($min_val == $max_val) {
             $entry['price_range'] = '£' . $min_val;
@@ -275,5 +445,81 @@ class WooCommerceController extends Controller
         }
 
         return $entry;
+    }
+
+    public static function updateProductStock(Request $request) {
+        $product_id = Input::get('product_id', '');
+        $variation_id = Input::get('variation_id', '');
+        $is_variation = Input::get('is_variation', '');
+        $operator = Input::get('operator', '');
+        $stock_qty = Input::get('stock_qty', '');
+
+        $message = '<p>';
+
+        // Basic validation
+        if($product_id == '') {
+            $message .= "There was no product ID specified.<br/>";
+        }
+
+        if($is_variation == true && $variation_id == '') {
+            $message .= "No variation ID was specified.<br/>";
+        }
+
+        if($stock_qty == '') {
+            $message .= "There was no quantity specified.<br/>";
+        }
+
+        // Process if validation passed
+        if(
+            (
+            $product_id != '' &&
+            $stock_qty != ''
+            ) ||
+            (
+            $product_id != '' &&
+            $variation_id != '' &&
+            $is_variation != '' &&
+            $stock_qty != ''
+            )
+        ) {
+            $woocommerce = self::get_woocommerce_client();
+
+            if($is_variation == true) {
+                $product = $woocommerce->get('products/' . $product_id . '/variations/' . $variation_id);
+            } else {
+                $product = $woocommerce->get('products/' . $product_id);
+            }
+
+            $old_stock_qty = $product->stock_quantity;
+
+            $data = [
+                'manage_stock' => true,
+                'stock_quantity' => $stock_qty
+            ];
+
+            if($is_variation == true) {
+                $woocommerce->put('products/' . $product_id . '/variations/' . $variation_id, $data);
+            } else {    
+                $result = $woocommerce->put('products/' . $product_id, $data);
+            }
+
+            if($is_variation == true) {
+                $message .= 'The product is a variation type.<br/>';
+                $message .= 'The original stock of this product is: ' . $old_stock_qty . '<br/>';
+                $message .= 'The product variation has changed the stock level to: ' . $stock_qty . '<br/>';
+            } else {
+                $message .= 'The product is a simple type.<br/>';
+                $message .= 'The original stock of this product is: ' . $old_stock_qty . '<br/>';
+                $message .= 'The product has changed the stock level to: ' . $stock_qty . '<br/>';
+            }
+        }
+
+        $message .= '</p>';
+
+        return view('Public.WooCommerceStock', [
+            'data' => [
+                'message' => $message
+            ]
+        ]);
     }
 }

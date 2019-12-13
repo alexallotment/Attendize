@@ -7,7 +7,8 @@
 @section('content')
     <div class="allotment-event-heading event-heading-order-form">
 		ORDER DETAILS
-	</div>
+    </div>
+
     <div class="event-checkout-section">
         <div class="row">
         <div class="col-lg-4">

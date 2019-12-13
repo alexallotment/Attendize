@@ -8,6 +8,12 @@ Route::get('/e/10/fontaines-dc-norwich-feb-2020', function() {
     return Redirect::to('/e/4/fontaines-dc-norwich-feb-2020');
 });
 
+// TEST FOR UPDATING STOCK ON WOOCOMMERCE
+Route::get('/woocommercestock', [
+    'as'   => 'updateProductStock',
+    'uses' => 'WooCommerceController@updateProductStock',
+]);
+
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),

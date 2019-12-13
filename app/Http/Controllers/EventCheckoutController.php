@@ -14,6 +14,7 @@ use App\Models\OrderItem;
 use App\Models\PaymentGateway;
 use App\Models\QuestionAnswer;
 use App\Models\ReservedTickets;
+use App\Models\ReservedProducts;
 use App\Models\Ticket;
 use App\Services\Order as OrderService;
 use Services\PaymentGateway\Factory as PaymentGatewayFactory;
@@ -143,6 +144,10 @@ class EventCheckoutController extends Controller
         return $errors;
     }   
 
+    public function reserve_products_for_order($product_data, $order_expires_time, $event_id) {
+        $reserve_stock = WooCommerceController::reserve_product_stock($product_data, $order_expires_time, $event_id);
+    }
+
     /**
      * Validate a ticket request. If successful reserve the tickets and redirect to checkout
      *
@@ -152,77 +157,6 @@ class EventCheckoutController extends Controller
      */
     public function postValidateTickets(Request $request, $event_id)
     {
-        /**
-         * Process WooCommerce orders
-         */
-        $product_data = $request->get('ap_ticketing_products');
-
-        // Log::info('ORIGINAL PRODUCT DATA:');
-        // Log::info(print_r($product_data, true));
-        // Log::info('----------------');
-
-        $simple_product_data = $this->get_simple_variable_products_for_checkout($product_data, 'simple');
-        
-        // Log::info('ORIGINAL PRODUCT DATA AFTER PROCESSING SIMPLE PRODUCTS:');
-        // Log::info(print_r($product_data, true));
-        // Log::info('----------------');
-
-        $variable_product_data = $this->get_simple_variable_products_for_checkout($product_data, 'variable');
-
-        // Log::info('ORIGINAL PRODUCT DATA AFTER PROCESSING VARIABLE PRODUCTS:');
-        // Log::info(print_r($product_data, true));
-        // Log::info('----------------');
-
-        //Check that the products are in stock onb the WooCommerce end before proceeding
-        $simple_product_errors = $this->check_simple_variable_product_stock($simple_product_data, 'simple');
-        $variable_product_errors = $this->check_simple_variable_product_stock($variable_product_data, 'variable');
-
-        //Log::info(print_r($variable_product_data, true));
-
-
-
-        $error_message = '';
-
-        if(!empty($simple_product_errors)) {
-            foreach($simple_product_errors as $error) {
-                $error_message .= $error;
-            }
-        }
-
-        if(!empty($variable_product_errors)) {
-            foreach($variable_product_errors as $error) {
-                $error_message .= $error;
-            }
-        }
-
-        if($error_message != '') {
-            return response()->json([
-                'status'  => 'error',
-                'message' => $error_message,
-            ]);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /*
          * Order expires after X min
          */
@@ -347,6 +281,59 @@ class EventCheckoutController extends Controller
             ]);
         }
 
+
+
+
+
+
+        /**
+         * Process WooCommerce orders
+         */
+        $product_data = $request->get('ap_ticketing_products');
+
+        $simple_product_data = $this->get_simple_variable_products_for_checkout($product_data, 'simple');
+        $variable_product_data = $this->get_simple_variable_products_for_checkout($product_data, 'variable');
+
+        //Check that the products are in stock on the WooCommerce end before proceeding
+        $simple_product_errors = $this->check_simple_variable_product_stock($simple_product_data, 'simple');
+        $variable_product_errors = $this->check_simple_variable_product_stock($variable_product_data, 'variable');
+
+        $error_message = '';
+
+        if(!empty($simple_product_errors)) {
+            foreach($simple_product_errors as $error) {
+                $error_message .= $error;
+            }
+        }
+
+        if(!empty($variable_product_errors)) {
+            foreach($variable_product_errors as $error) {
+                $error_message .= $error;
+            }
+        }
+
+        if($error_message != '') {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $error_message,
+            ]);
+        }
+
+        /*
+        * Validation passed, so, next is to reserve the products, both on the ticketing side
+        * and the WooCommerce side.
+        */
+
+        $order_expires_time = Carbon::now()->addMinutes(config('attendize.checkout_timeout_after'));
+
+        $this->reserve_products_for_order([$simple_product_data, $variable_product_data], $order_expires_time, $event_id);
+
+
+
+
+
+
+
         $activeAccountPaymentGateway = $event->account->getGateway($event->account->payment_gateway_id);
         //if no payment gateway configured and no offline pay, don't go to the next step and show user error
         if (empty($activeAccountPaymentGateway) && !$event->enable_offline_payments) {
@@ -378,7 +365,8 @@ class EventCheckoutController extends Controller
             'account_id'              => $event->account->id,
             'affiliate_referral'      => Cookie::get('affiliate_' . $event_id),
             'account_payment_gateway' => $activeAccountPaymentGateway,
-            'payment_gateway'         => $paymentGateway
+            'payment_gateway'         => $paymentGateway,
+            'products'                  => [$simple_product_data, $variable_product_data]
         ]);
 
 

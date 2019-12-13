@@ -1,4 +1,6 @@
 
+<pre><?php print_r($products); ?></pre>
+
 <div class="event-section-order-form">
     <table class="table mb0 table-condensed">
 
