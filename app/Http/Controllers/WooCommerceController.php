@@ -42,24 +42,29 @@ class WooCommerceController extends Controller
         return $woocommerce;
     }
 
+    public static function map_all_product_data_for_checkout($products) {
+        $simple_products = $products[0];
+        $variable_products = $products[1];
+
+        $simple_products_data = self::processWoocommerceProducts($simple_products, 'simple');
+        $variable_products_data = self::processWoocommerceProducts($variable_products, 'variable');
+
+        $simple_products = self::map_products_data($simple_products_data, $simple_products, 'simple');
+        $variable_products = self::map_products_data($variable_products_data, $variable_products, 'variable');
+
+        return [$simple_products, $variable_products];
+    }
+
     public static function reserve_product_stock($product_data, $order_expires_time, $event_id) {
         $simple_products = $product_data[0];
         $variable_products = $product_data[1];
 
         //Process products
-        $simple_products_data = self::processWoocommerceProducts($simple_products, 'simple');
-        $variable_products_data = self::processWoocommerceProducts($variable_products, 'variable');
-
-        // Log::info(print_r("''''''''''''''", true));
-        // Log::info(print_r($variable_products_data, true));
-        // Log::info(print_r("'''''''''''''''", true));
+        // $simple_products_data = self::processWoocommerceProducts($simple_products, 'simple');
+        // $variable_products_data = self::processWoocommerceProducts($variable_products, 'variable');
 
         // $simple_products = self::map_products_data($simple_products_data, $simple_products, 'simple');
         // $variable_products = self::map_products_data($variable_products_data, $variable_products, 'variable');
-
-        // Log::info(print_r('---====----', true));
-        // Log::info(print_r($variable_products, true));
-        // Log::info(print_r('---====----', true));
 
         //If at this point everything should be good with WooCommerce so we update the Ticketing side
         foreach($simple_products as $simple_prod) {

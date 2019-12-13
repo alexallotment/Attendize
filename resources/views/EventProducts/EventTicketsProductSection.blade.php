@@ -8,12 +8,6 @@
         @foreach ($products as $product)
             <div class="order-form-product-entry">
                 <div class="row">
-                    <?php
-                    // echo "<pre>";
-                    // print_r($product);
-                    // echo "</pre>";
-                    ?>
-
                     @php
                     if($product['type'] == 'bundle'):
                     @endphp
@@ -44,11 +38,11 @@
                                 if($prod['type'] == 'simple'):
                                 @endphp
 
-                                    <p class="<?php echo $prod['stock_level']; ?>">
+                                    {{-- <p class="<?php //echo $prod['stock_level']; ?>">
                                         @php
                                         echo $prod['stock_amount'];   
                                         @endphp
-                                    </p>
+                                    </p> --}}
 
                                 @php
                                 endif;
@@ -140,48 +134,31 @@
                             </p>
 
                             @foreach ($product['variations'] as $var)
-                            <div class="row">
-                                    <div class="col-md-6">
-                                            <h5>
+                                <div class="row">
+                                        <div class="col-md-4" style="margin-bottom: 10px;">
+                                            <span class="inline-block">
                                                 @php
                                                 echo $var['name'];
                                                 @endphp
-                                            </h5>
-
-                                            <p class="<?php echo $var['stock_level']; ?>">
-                                                @php
-                                                    echo $var['stock_amount'];   
-                                                @endphp
-                                            </p>
-                    
-                                            <p>
-                                                @php
-                                                echo $var['price'];   
-                                                @endphp
-                                            </p>
+                                            </span>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <label for="">Quantity</label>
-                                                        @php
-                                                        $html_value = $product['id'] . '_' . $var['id'] . '_0_';
-                                                        @endphp
-                                                        <select name="ap_ticketing_products[]" class="form-control">
-                                                            <option value="<?php echo $html_value . '0'; ?>">0</option>
-                                                            <option value="<?php echo $html_value . '1'; ?>">1</option>
-                                                            <option value="<?php echo $html_value . '2'; ?>">2</option>
-                                                            <option value="<?php echo $html_value . '3'; ?>">3</option>
-                                                            <option value="<?php echo $html_value . '4'; ?>">4</option>
-                                                            <option value="<?php echo $html_value . '5'; ?>">5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-4" style="margin-bottom: 10px;">
+                                            <label class="inline-block" for="">Quantity</label>
                                         </div>
-                            </div>
-
+                                        <div class="col-md-4" style="margin-bottom: 10px;">
+                                            @php
+                                            $html_value = $product['id'] . '_' . $var['id'] . '_0_';
+                                            @endphp
+                                            <select class="inline-block" name="ap_ticketing_products[]" class="form-control">
+                                                <option value="<?php echo $html_value . '0'; ?>">0</option>
+                                                <option value="<?php echo $html_value . '1'; ?>">1</option>
+                                                <option value="<?php echo $html_value . '2'; ?>">2</option>
+                                                <option value="<?php echo $html_value . '3'; ?>">3</option>
+                                                <option value="<?php echo $html_value . '4'; ?>">4</option>
+                                                <option value="<?php echo $html_value . '5'; ?>">5</option>
+                                            </select>
+                                        </div>
+                                </div>
                             @endforeach
 
                         </div>
@@ -207,11 +184,6 @@
                                 echo $product['name'];
                                 @endphp
                             </h4>
-                            <p class="<?php echo $product['stock_level']; ?>">
-                                @php
-                                 echo $product['stock_amount'];   
-                                @endphp
-                            </p>
     
                             <p>
                                 @php
@@ -222,11 +194,11 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="">Quantity</label>
+                                        <label class="inline-block" style="margin-right: 10px;" for="">Quantity</label>
                                         @php
                                         $html_value = $product['id'] . '_0_0_';
                                         @endphp
-                                        <select name="ap_ticketing_products[]" class="form-control">
+                                        <select class="inline-block" name="ap_ticketing_products[]" class="form-control">
                                             <option value="<?php echo $html_value . '0'; ?>">0</option>
                                             <option value="<?php echo $html_value . '1'; ?>">1</option>
                                             <option value="<?php echo $html_value . '2'; ?>">2</option>

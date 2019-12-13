@@ -328,7 +328,7 @@ class EventCheckoutController extends Controller
 
         $this->reserve_products_for_order([$simple_product_data, $variable_product_data], $order_expires_time, $event_id);
 
-
+        $products_for_checkout = WooCommerceController::map_all_product_data_for_checkout([$simple_product_data, $variable_product_data]);
 
 
 
@@ -366,7 +366,7 @@ class EventCheckoutController extends Controller
             'affiliate_referral'      => Cookie::get('affiliate_' . $event_id),
             'account_payment_gateway' => $activeAccountPaymentGateway,
             'payment_gateway'         => $paymentGateway,
-            'products'                  => [$simple_product_data, $variable_product_data]
+            'products'                => $products_for_checkout
         ]);
 
 
